@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DECRYPT — The Movement</title>
+    <meta name="description" content="DECRYPT is a movement of technology enthusiasts, creatives and builders creating spaces to learn, connect and shape what comes next.">
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Loading Sequence -->
+    <div id="loader">
+        <div class="loader-text">DECRYPT</div>
+        <div class="loader-line"></div>
+    </div>
+
+    <!-- Custom Cursor (Desktop Only) -->
+    <div id="cursor">
+        <span class="cursor-text"></span>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#hero">DECRYPT</a>
+            </div>
+            <div class="nav-links">
+                <a href="#movement">MOVEMENT</a>
+                <a href="#decrypt-1">DECRYPT 1.0</a>
+                <a href="#archive">ARCHIVE</a>
+                <a href="#join" class="nav-join">JOIN</a>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <div class="mobile-links">
+            <a href="#movement">MOVEMENT</a>
+            <a href="#decrypt-1">DECRYPT 1.0</a>
+            <a href="#archive">ARCHIVE</a>
+            <a href="#join">JOIN DECRYPT</a>
+        </div>
+    </div>
+
+    <main>
+        <!-- 01 HERO -->
+        <section id="hero" class="section-hero">
+            <div class="hero-content">
+                <h1 class="hero-title reveal-text">DECRYPT</h1>
+                <div class="hero-meta reveal-up">
+                    <p>A MOVEMENT FOR THE<br>TECH-CURIOUS.</p>
+                </div>
+            </div>
+            <div class="hero-footer reveal-up delay-1">
+                <span class="green-dot"></span>
+                <p>MOVEMENT / TECHNOLOGY / CREATIVITY</p>
+            </div>
+        </section>
+
+        <!-- 02 THE MOVEMENT -->
+        <section id="movement" class="section-movement">
+            <div class="grid">
+                <div class="col-5">
+                    <h2 class="section-heading reveal-up">NOT JUST<br>A CONFERENCE.</h2>
+                </div>
+                <div class="col-7">
+                    <p class="large-body reveal-up delay-1">DECRYPT IS<br>A MOVEMENT.</p>
+                    <p class="standard-body reveal-up delay-2 mt-2">DECRYPT is a movement of technology enthusiasts, creatives, learners, and builders who believe exposure to the right knowledge, people, and ideas can change the trajectory of a person's future.</p>
+                    <p class="standard-body reveal-up delay-3 mt-1">The annual conference is the movement's flagship gathering. But the movement extends far beyond the conference.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 MANIFESTO -->
+        <section id="manifesto" class="section-manifesto">
+            <div class="manifesto-wrapper">
+                <h2 class="manifesto-text reveal-up">WE DON'T<br>JUST CONSUME<br>THE FUTURE.</h2>
+                <h2 class="manifesto-text indent-1 reveal-up">WE LEARN IT.</h2>
+                <h2 class="manifesto-text indent-2 reveal-up">WE BUILD IT.</h2>
+                <h2 class="manifesto-text indent-3 reveal-up accent-text">WE SHAPE IT.</h2>
+                
+                <div class="grid mt-5">
+                    <div class="col-4 push-8">
+                        <p class="standard-body reveal-up">Technology is changing quickly. Young people should not simply consume technology. They should understand it. Question it. Secure it. And eventually shape what comes next.</p>
+                        <p class="standard-body reveal-up mt-1">DECRYPT exists to create environments where people can encounter ideas, knowledge, people, and opportunities that push them forward.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04 WHAT WE DO -->
+        <section id="ecosystem" class="section-ecosystem">
+            <div class="grid">
+                <div class="col-12 mb-4">
+                    <h3 class="meta-heading reveal-up">THE ECOSYSTEM</h3>
+                </div>
+                <div class="col-12 ecosystem-list" id="ecosystem-container">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 05 DECRYPT 1.0 -->
+        <section id="decrypt-1" class="section-decrypt-1">
+            <div class="grid decrypt-header">
+                <div class="col-12 reveal-up">
+                    <h3 class="meta-heading accent-text">THE INAUGURAL EDITION</h3>
+                    <h2 class="massive-heading mt-1">DECRYPT 1.0</h2>
+                </div>
+                <div class="col-6 mt-2 reveal-up delay-1">
+                    <p class="large-body">THE CODE BEHIND CREATIVITY</p>
+                    <p class="meta-text mt-1">OCTOBER 2025</p>
+                </div>
+                <div class="col-6 mt-2 reveal-up delay-2">
+                    <p class="standard-body">DECRYPT 1.0 was a 7-day certified digital skills conference conducted virtually through Telegram. It brought together participants, volunteers, speakers, and a four-person planning team for seven consecutive days of learning and interaction.</p>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="timeline-container mt-5">
+                <div class="grid">
+                    <div class="col-12 mb-2">
+                        <h3 class="meta-heading reveal-up">THE PROGRAM</h3>
+                    </div>
+                </div>
+                <div class="timeline" id="timeline-container">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Speakers -->
+            <div class="speakers-container mt-5">
+                <div class="grid">
+                    <div class="col-12 mb-3">
+                        <h3 class="meta-heading reveal-up">THE SPEAKERS</h3>
+                    </div>
+                </div>
+                <div class="grid speakers-grid" id="speakers-container">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Outcomes -->
+            <div class="outcomes-container mt-5">
+                <div class="grid">
+                    <div class="col-4 reveal-up">
+                        <h4 class="small-heading mb-1">PARTICIPANTS RECEIVED</h4>
+                        <ul class="clean-list">
+                            <li>7 days of structured digital learning</li>
+                            <li>Practical insights from experienced speakers</li>
+                            <li>Session recordings</li>
+                            <li>Certificate of Participation</li>
+                        </ul>
+                    </div>
+                    <div class="col-4 reveal-up delay-1">
+                        <h4 class="small-heading mb-1">EXPOSURE TO</h4>
+                        <ul class="clean-list">
+                            <li>Artificial Intelligence</li>
+                            <li>Cybersecurity</li>
+                            <li>Video Editing & Graphic Design</li>
+                            <li>Leadership & Entrepreneurship</li>
+                            <li>Forex & Digital Opportunities</li>
+                        </ul>
+                    </div>
+                    <div class="col-4 reveal-up delay-2">
+                        <h4 class="small-heading mb-1">RECOGNITION</h4>
+                        <ul class="clean-list">
+                            <li><strong>Planning Team:</strong> Certificates of Excellence</li>
+                            <li><strong>Speakers:</strong> Awards of Honor</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 06 THE ARCHIVE -->
+        <section id="archive" class="section-archive">
+            <div class="archive-header reveal-up">
+                <h2 class="section-heading">THE ARCHIVE</h2>
+                <div class="archive-controls">
+                    <button id="prev-archive" aria-label="Previous image">←</button>
+                    <button id="next-archive" aria-label="Next image">→</button>
+                </div>
+            </div>
+            
+            <div class="archive-carousel" id="archive-carousel">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- 07 PEOPLE / COMMUNITY -->
+        <section id="people" class="section-people">
+            <div class="grid">
+                <div class="col-6 reveal-up">
+                    <h2 class="section-heading">THE PEOPLE<br>ARE THE<br>MOVEMENT.</h2>
+                </div>
+                <div class="col-5 push-1 mt-2 reveal-up delay-1">
+                    <p class="standard-body">DECRYPT brings together people at different stages: students, creatives, developers, cybersecurity enthusiasts, entrepreneurs, designers, AI enthusiasts, curious learners, and builders.</p>
+                </div>
+            </div>
+
+            <div class="testimonials mt-5" id="testimonials-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- 08 WHAT'S NEXT -->
+        <section id="future" class="section-future">
+            <div class="grid">
+                <div class="col-12 reveal-up">
+                    <h2 class="section-heading text-center">THIS IS ONLY<br>THE BEGINNING.</h2>
+                </div>
+                <div class="col-6 push-3 text-center mt-3 reveal-up delay-1">
+                    <p class="standard-body">DECRYPT aims to grow beyond an annual conference into a continuing ecosystem of meetings, conversations, learning experiences, creative challenges, and publications.</p>
+                    <p class="standard-body mt-1">The long-term vision is to create a network of young, technology-savvy people who grow with one another. People who may one day become significant figures in technology can look back and recognize that some of their earliest exposure, conversations or opportunities were connected to DECRYPT.</p>
+                    
+                    <div class="next-teaser mt-4">
+                        <h3 class="massive-heading">DECRYPT 2.0</h3>
+                        <p class="meta-heading accent-text mt-1">COMING NEXT</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 09 JOIN DECRYPT -->
+        <section id="join" class="section-join">
+            <div class="join-content reveal-up">
+                <h2 class="section-heading">BE PART OF IT.</h2>
+                <div class="cta-group mt-4" id="cta-container">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 10 FOOTER -->
+    <footer id="footer">
+        <div class="grid">
+            <div class="col-4">
+                <h3 class="footer-logo">DECRYPT</h3>
+                <p class="meta-text mt-1">The movement for the tech-curious.</p>
+            </div>
+            <div class="col-4">
+                <h4 class="meta-heading mb-1">CONNECT</h4>
+                <ul class="clean-list" id="social-links">
+                    <!-- Populated by JS -->
+                </ul>
+            </div>
+            <div class="col-4">
+                <h4 class="meta-heading mb-1">INQUIRIES</h4>
+                <ul class="clean-list" id="contact-links">
+                    <!-- Populated by JS -->
+                </ul>
+            </div>
+            <div class="col-12 footer-bottom mt-4 pt-2 border-top">
+                <p class="meta-text">© <span id="current-year"></span> DECRYPT MOVEMENT. ALL RIGHTS RESERVED.</p>
+                <p class="meta-text">DESIGNED FOR THE FUTURE.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fullscreen Image Viewer -->
+    <div id="image-viewer" class="fullscreen-viewer">
+        <button class="viewer-close" aria-label="Close viewer">✕</button>
+        <button class="viewer-prev" aria-label="Previous image">←</button>
+        <img src="" alt="Fullscreen view" id="viewer-image">
+        <button class="viewer-next" aria-label="Next image">→</button>
+        <div class="viewer-counter"><span id="viewer-current">1</span> / <span id="viewer-total">1</span></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

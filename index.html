@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DECRYPT — Something Is Being Built</title>
+    <meta name="description" content="DECRYPT is a movement of technology enthusiasts, creatives and builders. The next chapter is currently under construction.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="DECRYPT — Something Is Being Built">
+    <meta property="og:description" content="DECRYPT is a movement of technology enthusiasts, creatives and builders. The next chapter is currently under construction.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/branding/og-image.jpg">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#022804">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23022804'/%3E%3Ctext x='50' y='68' font-family='system-ui' font-size='50' font-weight='700' fill='white' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loader" class="loader" aria-hidden="true">
+        <div class="loader-inner">
+            <span class="loader-brand">DECRYPT</span>
+            <span class="loader-sub">BUILDING DIGITAL SPACE</span>
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom Cursor -->
+    <div id="cursor" class="cursor" aria-hidden="true"></div>
+    
+    <!-- Main Page -->
+    <div class="page" id="page">
+        <!-- Header -->
+        <header class="header">
+            <a href="#" class="logo" aria-label="DECRYPT" data-cursor>
+                <span class="logo-text">DECRYPT</span>
+            </a>
+            <div class="status" aria-live="polite">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span class="status-text">BUILDING</span>
+            </div>
+        </header>
+        
+        <!-- Hero / Construction Scene -->
+        <main class="main">
+            <div class="scene-wrap" id="sceneWrap">
+                <!-- Video Layer (replace with actual 3D video when available) -->
+                <video 
+                    id="constructionVideo"
+                    class="scene-video"
+                    autoplay 
+                    muted 
+                    loop 
+                    playsinline
+                    preload="auto"
+                    poster="assets/animation/decrypt-construction-poster.jpg"
+                    aria-label="DECRYPT construction animation"
+                >
+                    <source src="assets/animation/decrypt-construction.webm" type="video/webm">
+                    <source src="assets/animation/decrypt-construction.mp4" type="video/mp4">
+                </video>
+                
+                <!-- Canvas Fallback Animation -->
+                <canvas id="constructionCanvas" class="scene-canvas" aria-hidden="true"></canvas>
+                
+                <!-- Reduced Motion Fallback -->
+                <div id="reducedMotionFallback" class="scene-fallback" aria-hidden="true">
+                    <div class="fallback-inner">
+                        <div class="fallback-structure">
+                            <div class="fallback-brick fb-1"></div>
+                            <div class="fallback-brick fb-2"></div>
+                            <div class="fallback-brick fb-3"></div>
+                            <div class="fallback-brick fb-4"></div>
+                            <div class="fallback-brick fb-5"></div>
+                            <div class="fallback-frame"></div>
+                        </div>
+                        <div class="fallback-char fc-1"></div>
+                        <div class="fallback-char fc-2"></div>
+                        <div class="fallback-char fc-3"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Copy -->
+            <div class="copy">
+                <h1 class="copy-headline">
+                    <span class="copy-line" data-reveal>WE'RE BUILDING</span>
+                    <span class="copy-line" data-reveal>SOMETHING.</span>
+                </h1>
+                <p class="copy-body" data-reveal>
+                    The next chapter of DECRYPT is under construction.<br>
+                    We're taking our time to build it properly.
+                </p>
+            </div>
+            
+            <!-- Countdown -->
+            <div class="countdown" id="countdown" aria-live="polite" data-reveal>
+                <span class="countdown-label">LAUNCHING IN</span>
+                <div class="countdown-grid" id="countdownGrid">
+                    <div class="countdown-unit">
+                        <span class="countdown-number" id="cdDays">00</span>
+                        <span class="countdown-name">DAYS</span>
+                    </div>
+                    <div class="countdown-unit">
+                        <span class="countdown-number" id="cdHours">00</span>
+                        <span class="countdown-name">HOURS</span>
+                    </div>
+                    <div class="countdown-unit">
+                        <span class="countdown-number" id="cdMinutes">00</span>
+                        <span class="countdown-name">MINUTES</span>
+                    </div>
+                    <div class="countdown-unit">
+                        <span class="countdown-number" id="cdSeconds">00</span>
+                        <span class="countdown-name">SECONDS</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Live State (hidden by default) -->
+            <div class="live-state" id="liveState" aria-hidden="true" data-reveal>
+                <h2 class="live-title">WE'RE LIVE.</h2>
+                <a href="#" class="live-cta" id="liveCta" data-cursor>
+                    ENTER DECRYPT <span class="live-arrow">→</span>
+                </a>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-brand">
+                <span class="footer-name">DECRYPT</span>
+                <span class="footer-tag">THE MOVEMENT</span>
+            </div>
+            <nav class="footer-social" aria-label="Social links">
+                <a href="#" class="social-link" id="socialInstagram" data-cursor aria-label="Instagram">Instagram</a>
+                <a href="#" class="social-link" id="socialFacebook" data-cursor aria-label="Facebook">Facebook</a>
+                <a href="#" class="social-link" id="socialWhatsApp" data-cursor aria-label="WhatsApp">WhatsApp</a>
+                <a href="#" class="social-link" id="socialLinkedIn" data-cursor aria-label="LinkedIn">LinkedIn</a>
+                <a href="#" class="social-link" id="socialEmail" data-cursor aria-label="Email">Email</a>
+            </nav>
+            <p class="footer-copy">© <span id="footerYear">2026</span> DECRYPT</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
