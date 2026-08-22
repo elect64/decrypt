@@ -1,5 +1,5 @@
 const CONFIG = {
-    launchDate: "2026-08-24T00:00:00",
+    launchDate: "2026-08-26T00:00:00",
     websiteUrl: "https://decrypt.pxxl.click",
     instagram: "https://www.instagram.com/officialdecrypt_?igsh=dGdjZDdlODBmZTl2",
     facebook: "https://www.facebook.com/share/19V4zN4ikG/",
