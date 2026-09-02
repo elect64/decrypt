@@ -1,0 +1,65 @@
+/* ==========================================================
+   DECRYPT V4 — VARIABLES
+   Evolved from the reference coming-soon codebase's token
+   system (--c-*, --t-*, --z-*) rather than replaced.
+   Dark DECRYPT green is now the primary universe; the
+   reference's white/editorial mode becomes light mode.
+   ========================================================== */
+
+:root {
+  /* ---- brand (fixed, theme-independent) ---- */
+  --c-decrypt:      #07220C;
+  --c-decrypt-deep: #03130A;
+  --c-white:        #FFFFFF;
+  --c-black:        #000000;
+
+  /* ---- dark mode (default): the DECRYPT universe ---- */
+  --c-bg:            #07220C;
+  --c-space:         #03130A;
+  --c-surface:       #10331B;
+  --c-text:          #FFFFFF;
+  --c-text-secondary: rgba(255,255,255,0.6);
+  --c-border:        rgba(255,255,255,0.12);
+  --c-accent:        #9CF0B0;
+  --c-accent-strong: #6BE092;
+
+  /* ---- type: evolved from reference (Space Grotesk / Inter)
+     swapped to Agrandir when licensed files are added ---- */
+  --font-display: 'Agrandir', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-body:    'Suisse Intl', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* ---- timing — same curve family as the reference ---- */
+  --t-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-base:   300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-slow:   600ms cubic-bezier(0.16, 1, 0.3, 1);
+  --t-reveal: 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  --t-theme:  900ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- layout ---- */
+  --edge: clamp(20px, 5vw, 64px);
+  --nav-h: 76px;
+  --step-hero: clamp(3rem, 8.5vw, 8.5rem);
+  --step-h1:   clamp(2.1rem, 5vw, 4.2rem);
+  --step-h2:   clamp(1.4rem, 2.8vw, 2.2rem);
+
+  /* ---- z-index — same scale as the reference ---- */
+  --z-loader:  9999;
+  --z-toast:   9500;
+  --z-cursor:  9998;
+  --z-nav-mobile: 600;
+  --z-header:  500;
+  --z-canvas:  1;
+  --z-world:   2;
+}
+
+[data-theme="light"] {
+  --c-bg:             #F5F6F1;
+  --c-space:          #E7EBE2;
+  --c-surface:        #ECEFE7;
+  --c-text:           #08130C;
+  --c-text-secondary: rgba(8,19,12,0.6);
+  --c-border:         rgba(8,19,12,0.12);
+  --c-accent:         #0E5A28;
+  --c-accent-strong:  #0A431E;
+}

@@ -1,0 +1,51 @@
+/* ==========================================================
+   DECRYPT V4 — ANIMATIONS
+   ========================================================== */
+
+@keyframes loaderIn { to { opacity: 1; transform: translateY(0); } }
+
+@keyframes loaderLine {
+  0%   { transform: translateX(-100%); }
+  60%  { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+/* ---------- Scroll reveal (IntersectionObserver-driven,
+   same mechanism as the reference site) ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--t-reveal), transform var(--t-reveal);
+}
+[data-reveal].revealed { opacity: 1; transform: translateY(0); }
+
+/* ---------- Scroll cue ---------- */
+.scroll-cue {
+  position: absolute; bottom: 32px; left: var(--edge);
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em;
+  color: var(--c-text-secondary); text-transform: uppercase;
+}
+.scroll-cue .bar { width: 1px; height: 32px; background: var(--c-border); position: relative; overflow: hidden; }
+.scroll-cue .bar::after {
+  content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+  background: var(--c-accent); animation: scrollcue 2.4s ease-in-out infinite;
+}
+@keyframes scrollcue { 0% { top: -100%; } 60% { top: 100%; } 100% { top: 100%; } }
+
+/* ---------- Status pulse ---------- */
+.status-dot { animation: statusPulse 2.5s ease-in-out infinite; }
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* ---------- Scene switch flash (hero vault tap) ---------- */
+@keyframes sceneFlash {
+  0%   { opacity: 0; }
+  30%  { opacity: 0.16; }
+  100% { opacity: 0; }
+}
+
+/* ---------- Loader unlocking cue ---------- */
+.loader.granted .loader-brand { color: var(--c-accent); transition: color var(--t-base); }

@@ -1,0 +1,53 @@
+/* ==========================================================
+   DECRYPT DATA
+   Content only — never fabricated. Add real entries as
+   information becomes available.
+   ========================================================== */
+
+const EDITION_DATA = [
+  { id: "1.0", index: "01", name: "DECRYPT 1.0", theme: "The Code Behind Creativity", date: "October 2025", format: "7 Days · Virtual · Telegram", status: "unlocked", hasDetail: true },
+  { id: "2.0", index: "02", name: "DECRYPT 2.0", theme: "The next chapter is forming",  date: "October 2026", format: "Details unlocking soon",      status: "current",  hasDetail: false },
+  { id: "3.0", index: "03", name: "DECRYPT 3.0", theme: "Undisclosed",                  date: "2027",         format: "Locked",                       status: "locked",   hasDetail: false },
+  { id: "4.0", index: "04", name: "DECRYPT 4.0", theme: "Undisclosed",                  date: "2028",         format: "Locked",                       status: "locked",   hasDetail: false }
+];
+
+const SESSION_DATA = [
+  { day: "PRE", track: "Pre-DECRYPT Conversation", title: "An opening conversation ahead of the 7-day conference." },
+  { day: "01",  track: "Leadership",               title: "Leadership session with Victoria Chisom." },
+  { day: "02",  track: "Entrepreneurship",          title: "Entrepreneurship fundamentals for young builders." },
+  { day: "03",  track: "Graphic Design",            title: "Creativity with Your Phone." },
+  { day: "04",  track: "Forex",                     title: "Forex Fundamentals: Trading Smart, Trading Profitably." },
+  { day: "05",  track: "Artificial Intelligence",   title: "A Beginner's Guide to Artificial Intelligence: Supercharging Creativity with AI — with Emeka Okoro." },
+  { day: "06",  track: "Video Editing",             title: "Mastering Basic Video Editing Principles." },
+  { day: "07",  track: "Cybersecurity",             title: "Cybersecurity Decoded: Staying Safe in a Digital World — with Ezirim Kingdom." }
+];
+
+const SPEAKER_DATA = [
+  { name: "Ezirim Kingdom", role: "Cybersecurity",          note: "Face of Rivers Tech Awards 2025" },
+  { name: "Emeka Okoro",    role: "Artificial Intelligence", note: "A Beginner's Guide to AI" },
+  { name: "Victoria Chisom", role: "Leadership",             note: "DECRYPT 1.0" }
+];
+
+const MOVEMENT_DATA = [
+  { title: "Knowledge",   detail: "Practical, certified sessions across the skills young people actually need exposure to — from AI to leadership to cybersecurity." },
+  { title: "People",      detail: "Speakers, organizers and a community who show up again after the conference ends." },
+  { title: "Ideas",       detail: "Space to ask, question, and connect concepts across disciplines instead of sitting in one lane." },
+  { title: "Opportunity", detail: "Exposure and access that can change the trajectory of someone's environment-limited starting point." }
+];
+
+const ECOSYSTEM_DATA = [
+  { title: "Community Meetups",  desc: "Regular gatherings between flagship editions." },
+  { title: "Conferences",        desc: "The annual flagship expression — DECRYPT 1.0 and onward." },
+  { title: "Bootcamps",          desc: "Focused, hands-on skill-building sprints." },
+  { title: "Creative Challenges", desc: "Prompts that push builders to ship and share." },
+  { title: "Publications",       desc: "Writing and resources that outlast a single event." }
+];
+
+const KNOWLEDGE_DATA = [
+  { id: "0001", category: "Cybersecurity",   title: "Staying Safe in a Digital World",         status: "From DECRYPT 1.0" },
+  { id: "0002", category: "AI",              title: "Supercharging Creativity with AI",        status: "From DECRYPT 1.0" },
+  { id: "0003", category: "Leadership",      title: "Leadership Fundamentals",                 status: "From DECRYPT 1.0" },
+  { id: "0004", category: "Entrepreneurship", title: "Starting Before You're Ready",            status: "From DECRYPT 1.0" },
+  { id: "0005", category: "Creative",        title: "Creativity with Your Phone",              status: "From DECRYPT 1.0" },
+  { id: "0006", category: "Career",          title: "Filed for a future edition",              status: "Locked" }
+];

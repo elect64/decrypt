@@ -1,0 +1,59 @@
+/* ==========================================================
+   DECRYPT V4 — RESPONSIVE
+   Tuned across 320 / 375 / 414 / 768 / 1024 / 1280 / 1440 / 1920
+   ========================================================== */
+
+/* ---------- ≥1280 ---------- */
+@media (min-width: 1280px) {
+  .scene-wrap { max-width: 1040px; }
+}
+
+/* ---------- ≥1440 : more breathing room, larger canvas world ---------- */
+@media (min-width: 1440px) {
+  .section-inner { max-width: 1480px; }
+}
+
+/* ---------- ≤1024 : tablet recomposition ---------- */
+@media (max-width: 1024px) {
+  .node-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-meta { gap: 26px; }
+}
+
+/* ---------- ≤860 : mobile nav switch (see layout.css) ---------- */
+
+/* ---------- ≤768 ---------- */
+@media (max-width: 768px) {
+  #hero .section-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .scene-wrap {
+    order: -1;
+    max-width: none;
+    aspect-ratio: 21 / 9;
+    border-left: none;
+    border-right: none;
+    margin: 0 calc(var(--edge) * -1);
+    width: calc(100% + var(--edge) * 2);
+    border-radius: 0;
+  }
+  .chapter { grid-template-columns: 46px 1fr; row-gap: 10px; }
+  .chapter .c-date, .chapter .status-pill { grid-column: 2; justify-self: start; }
+  .countdown-grid { gap: 1rem; }
+  .footer-top { flex-direction: column; align-items: flex-start; }
+}
+
+/* ---------- ≤480 (covers 320 / 375 / 414) ---------- */
+@media (max-width: 480px) {
+  .section { padding: 70px var(--edge); }
+  .node-grid { grid-template-columns: 1fr; }
+  .countdown-unit { min-width: 50px; }
+  .countdown-number { font-size: clamp(2rem, 9vw, 3rem); }
+  .header { padding: 1rem 1.1rem; }
+  .hero-meta { flex-direction: column; gap: 16px; }
+}
+
+/* ---------- ≤360 ---------- */
+@media (max-width: 360px) {
+  .countdown-grid { gap: 0.6rem; }
+}
