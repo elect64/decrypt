@@ -23,7 +23,7 @@
 
 /* ---------- ≤768 ---------- */
 @media (max-width: 768px) {
-  #hero .section-inner {
+  #hero .hero-grid {
     grid-template-columns: 1fr;
     gap: 28px;
   }
