@@ -44,6 +44,7 @@ const DecryptUI = (() => {
   /* ---------- Renderers ---------- */
   function renderChapters() {
     const list = document.getElementById('chapter-list');
+    if (!list) return;
     list.innerHTML = EDITION_DATA.map(ed => `
       <button class="chapter" data-id="${ed.id}" data-locked="${ed.status === 'locked'}" aria-expanded="false" data-cursor>
         <span class="c-index">${ed.index}</span>
@@ -74,7 +75,9 @@ const DecryptUI = (() => {
   }
 
   function renderSessions() {
-    document.getElementById('session-list').innerHTML = SESSION_DATA.map(s => `
+    const el = document.getElementById('session-list');
+    if (!el) return;
+    el.innerHTML = SESSION_DATA.map(s => `
       <div class="session-row">
         <span class="s-day">${s.day}</span>
         <span><span class="s-track">${s.track}</span><span class="s-title">${s.title}</span></span>
@@ -82,7 +85,9 @@ const DecryptUI = (() => {
   }
 
   function renderSpeakers() {
-    document.getElementById('speaker-wall').innerHTML = SPEAKER_DATA.map(s => `
+    const el = document.getElementById('speaker-wall');
+    if (!el) return;
+    el.innerHTML = SPEAKER_DATA.map(s => `
       <div class="speaker-card">
         <span class="sp-role">${s.role}</span>
         <span class="sp-name">${s.name}</span>
@@ -92,6 +97,7 @@ const DecryptUI = (() => {
 
   function renderMovement() {
     const wrap = document.getElementById('node-grid');
+    if (!wrap) return;
     wrap.innerHTML = MOVEMENT_DATA.map((n, i) => `
       <button class="node" data-i="${i}" aria-expanded="false" data-cursor>
         <span class="n-index">0${i + 1}</span>
@@ -108,12 +114,16 @@ const DecryptUI = (() => {
   }
 
   function renderEcosystem() {
-    document.getElementById('ecosystem').innerHTML = ECOSYSTEM_DATA.map(e => `
+    const el = document.getElementById('ecosystem');
+    if (!el) return;
+    el.innerHTML = ECOSYSTEM_DATA.map(e => `
       <div class="eco-item"><span class="e-title">${e.title}</span><span class="e-desc">${e.desc}</span></div>`).join('');
   }
 
   function renderKnowledge() {
-    document.getElementById('knowledge-grid').innerHTML = KNOWLEDGE_DATA.map(k => `
+    const el = document.getElementById('knowledge-grid');
+    if (!el) return;
+    el.innerHTML = KNOWLEDGE_DATA.map(k => `
       <div class="file-record">
         <span class="f-id">FILE ${k.id}</span>
         <span class="f-cat">${k.category}</span>
@@ -195,7 +205,8 @@ const DecryptUI = (() => {
     wireCTAs();
     initNav();
     initEasterEggs();
-    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    const fy = document.getElementById('footer-year');
+    if (fy) fy.textContent = new Date().getFullYear();
   }
 
   return { init, toast };

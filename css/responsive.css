@@ -23,7 +23,7 @@
 
 /* ---------- ≤768 ---------- */
 @media (max-width: 768px) {
-  #hero .hero-grid {
+  .hero-grid {
     grid-template-columns: 1fr;
     gap: 28px;
   }

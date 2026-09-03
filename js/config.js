@@ -13,6 +13,12 @@ const DECRYPT_CONFIG = {
   THEME_DEFAULT: "dark",   // "dark" | "light" — DECRYPT green stays default
   SOUND_DEFAULT: "on",     // "on" | "off"
 
+  // Where the registration form submits (e.g. a Formspree endpoint:
+  // "https://formspree.io/f/xxxxxxxx", or your own API route).
+  // Leave blank and the form falls back to opening the visitor's
+  // email client with their details pre-filled.
+  REGISTRATION_ENDPOINT: "",
+
   SOCIAL_LINKS: {
     instagram: "https://www.instagram.com/officialdecrypt_?igsh=dGdjZDdlODBmZTl2",
     facebook:  "https://www.facebook.com/share/19V4zN4ikG/",

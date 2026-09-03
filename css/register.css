@@ -1,0 +1,142 @@
+/* ==========================================================
+   DECRYPT — REGISTER PAGE
+   Extends the existing token/component system (variables.css,
+   components.css, layout.css). Nothing here redefines colors
+   or type — only new shapes: form fields, pills, FAQ, steps.
+   ========================================================== */
+
+/* ---------- Section intro / quick facts (reused hero-meta pattern) ---------- */
+.reg-quickfacts {
+  margin-top: 40px; display: flex; flex-wrap: wrap; gap: 34px;
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em;
+  color: var(--c-text-secondary); text-transform: uppercase;
+}
+.reg-quickfacts strong { color: var(--c-text); display: block; margin-bottom: 4px; }
+
+/* ---------- Form shell ---------- */
+.reg-form-chamber {
+  border: 1px solid var(--c-border);
+  padding: clamp(28px, 5vw, 56px);
+  position: relative;
+}
+.reg-form { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 28px; }
+.reg-form .field--full { grid-column: 1 / -1; }
+
+.field { display: flex; flex-direction: column; gap: 9px; }
+.field label {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--c-text-secondary);
+}
+.field label .req { color: var(--c-accent); margin-left: 3px; }
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field select,
+.field textarea {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  padding: 14px 16px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  border-radius: 2px;
+  transition: border-color var(--t-fast), background var(--t-fast);
+  width: 100%;
+}
+.field select { appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239CF0B0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center; background-size: 14px;
+  padding-right: 40px;
+}
+.field textarea { resize: vertical; min-height: 96px; font-family: var(--font-body); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--c-accent); background: color-mix(in srgb, var(--c-surface) 85%, var(--c-accent) 15%);
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--c-text-secondary); opacity: 0.7; }
+
+.field-hint { font-size: 0.74rem; color: var(--c-text-secondary); }
+.field-error {
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.04em;
+  color: var(--c-accent); display: none;
+}
+.field.has-error input, .field.has-error select, .field.has-error textarea { border-color: var(--c-accent); }
+.field.has-error .field-error { display: block; }
+
+/* ---------- Track pills (multi-select, checkbox-driven) ---------- */
+.track-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+.track-pill { position: relative; }
+.track-pill input {
+  position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer;
+}
+.track-pill span {
+  display: inline-block; border: 1px solid var(--c-border);
+  padding: 10px 16px; border-radius: 20px;
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--c-text-secondary);
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+}
+.track-pill input:checked + span {
+  background: var(--c-accent); border-color: var(--c-accent); color: var(--c-black);
+}
+.track-pill input:focus-visible + span { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+
+/* ---------- Consent row ---------- */
+.consent-row { display: flex; align-items: flex-start; gap: 12px; }
+.consent-row input[type="checkbox"] {
+  width: 18px; height: 18px; margin-top: 2px; accent-color: var(--c-accent); cursor: pointer; flex-shrink: 0;
+}
+.consent-row label { font-size: 0.84rem; color: var(--c-text-secondary); text-transform: none; font-family: var(--font-body); letter-spacing: normal; }
+
+/* ---------- Submit row ---------- */
+.reg-submit-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.reg-submit-row .btn:disabled { opacity: 0.5; pointer-events: none; }
+.reg-submit-note { font-family: var(--font-mono); font-size: 0.66rem; color: var(--c-text-secondary); letter-spacing: 0.06em; }
+
+/* ---------- Success panel ---------- */
+.reg-success { text-align: left; display: none; }
+.reg-success.active { display: block; }
+.reg-success .status-glyph {
+  width: 46px; height: 46px; border: 2px solid var(--c-accent); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 22px;
+}
+.reg-success .status-glyph::after { content: ''; width: 14px; height: 8px; border-left: 2px solid var(--c-accent); border-bottom: 2px solid var(--c-accent); transform: rotate(-45deg) translate(1px,-2px); }
+.reg-success h3 { font-size: var(--step-h2); margin-bottom: 12px; }
+.reg-success p { color: var(--c-text-secondary); max-width: 520px; text-transform: none; }
+.reg-access-code {
+  margin-top: 26px; display: inline-flex; flex-direction: column; gap: 6px;
+  border: 1px dashed var(--c-border); padding: 16px 22px;
+}
+.reg-access-code .label { color: var(--c-text-secondary); }
+.reg-access-code .code {
+  font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.12em; color: var(--c-accent);
+}
+.reg-success .btn { margin-top: 30px; }
+
+/* ---------- How it works (step list) ---------- */
+.step-list { border-top: 1px solid var(--c-border); }
+.step-row {
+  display: grid; grid-template-columns: 64px 1fr; gap: 22px;
+  padding: 26px 0; border-bottom: 1px solid var(--c-border); align-items: start;
+}
+.step-row .step-index { font-family: var(--font-display); font-size: 1.6rem; color: var(--c-accent); }
+.step-row .step-title { font-family: var(--font-display); font-size: 1.15rem; text-transform: uppercase; }
+.step-row .step-detail { margin-top: 6px; font-size: 0.9rem; color: var(--c-text-secondary); text-transform: none; max-width: 560px; }
+
+/* ---------- FAQ accordion ---------- */
+.faq-list { border-top: 1px solid var(--c-border); }
+.faq-item { border-bottom: 1px solid var(--c-border); }
+.faq-q {
+  width: 100%; text-align: left; padding: 24px 0; display: flex; justify-content: space-between; align-items: center; gap: 20px;
+  font-family: var(--font-display); font-size: clamp(1rem, 1.6vw, 1.2rem); text-transform: none;
+}
+.faq-q .faq-plus { font-family: var(--font-mono); font-size: 1.1rem; color: var(--c-accent); transition: transform var(--t-base); flex-shrink: 0; }
+.faq-item.open .faq-q .faq-plus { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height var(--t-slow); }
+.faq-item.open .faq-a { max-height: 220px; }
+.faq-a p { padding-bottom: 24px; color: var(--c-text-secondary); max-width: 640px; text-transform: none; font-size: 0.92rem; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .reg-form { grid-template-columns: 1fr; }
+  .step-row { grid-template-columns: 44px 1fr; }
+}

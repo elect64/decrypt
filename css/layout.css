@@ -58,6 +58,15 @@
 .nav-link:hover, .nav-link:focus-visible { color: var(--c-text); }
 .nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); }
 
+.nav-link.nav-cta {
+  color: var(--c-black);
+  background: var(--c-accent);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+.nav-link.nav-cta::after { display: none; }
+.nav-link.nav-cta:hover, .nav-link.nav-cta:focus-visible { color: var(--c-black); opacity: 0.85; }
+
 .header-controls { display: flex; align-items: center; gap: 10px; }
 .icon-btn {
   width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
@@ -83,9 +92,10 @@
   transition: transform var(--t-slow);
 }
 #mobile-nav.open { transform: translateY(0); }
-#mobile-nav button {
+#mobile-nav button, #mobile-nav a {
   font-family: var(--font-display); font-size: 2rem; text-transform: uppercase;
   text-align: left; padding: 14px 0; border-bottom: 1px solid var(--c-border);
+  display: block;
 }
 #mobile-nav .close-nav {
   position: absolute; top: 20px; right: var(--edge);
