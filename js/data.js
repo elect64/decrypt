@@ -25,11 +25,12 @@ const SESSION_DATA = [
 const SPEAKER_DATA = [
   { name: "Ezirim Kingdom", role: "Cybersecurity",          note: "Face of Rivers Tech Awards 2025" },
   { name: "Emeka Okoro",    role: "Artificial Intelligence", note: "A Beginner's Guide to AI" },
-  { name: "Victoria Chisom", role: "Leadership",             note: "DECRYPT 1.0" }
+  { name: "Victoria Chisom", role: "Leadership",             note: "DECRYPT 1.0" },
+  { name: "Mr Donanu Richard", role: "Entrepreneurship",      note: "DECRYPT 1.0" }
 ];
 
 const MOVEMENT_DATA = [
-  { title: "Knowledge",   detail: "Practical, certified sessions across the skills young people actually need exposure to — from AI to leadership to cybersecurity." },
+  { title: "Knowledge",   detail: "Practical, certified sessions across the skills young people actually need exposure to,   from AI to leadership to cybersecurity." },
   { title: "People",      detail: "Speakers, organizers and a community who show up again after the conference ends." },
   { title: "Ideas",       detail: "Space to ask, question, and connect concepts across disciplines instead of sitting in one lane." },
   { title: "Opportunity", detail: "Exposure and access that can change the trajectory of someone's environment-limited starting point." }
