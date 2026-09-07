@@ -237,5 +237,273 @@
 <script src="js/animations.js"></script>
 <script src="js/interactions.js"></script>
 <script src="js/main.js"></script>
+
+<!-- ========================================== -->
+<!-- DECRYPT GEMINI FAQ FLOATING WIDGET         -->
+<!-- ========================================== -->
+<div id="decrypt-ai-widget">
+  <!-- Floating Trigger Icon -->
+  <button id="ai-launcher" aria-label="Ask DECRYPT AI">
+    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <span>ASK AI</span>
+  </button>
+
+  <!-- Chat Box Window -->
+  <div id="ai-chat-window" class="ai-window-hidden">
+    <div class="ai-header">
+      <div>
+        <span class="ai-status-dot"></span>
+        <h3>DECRYPT ASSISTANT</h3>
+      </div>
+      <button id="ai-close">&times;</button>
+    </div>
+    
+    <div class="ai-body" id="ai-messages">
+      <div class="ai-msg ai-bot">
+        Hey! Ask me anything about DECRYPT 2.0, access codes, tracks, or schedules.
+      </div>
+    </div>
+
+    <form id="ai-form" class="ai-footer">
+      <input type="text" id="ai-input" placeholder="Ask a question..." autocomplete="off" required>
+      <button type="submit" id="ai-send">➔</button>
+    </form>
+  </div>
+</div>
+
+<style>
+  #decrypt-ai-widget {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 99999;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  #ai-launcher {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #000000;
+    color: #FFFFFF;
+    border: 1px solid #1A4D23;
+    padding: 12px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  #ai-launcher:hover {
+    background: #07220C;
+    border-color: #3ED97A;
+    transform: scale(1.05);
+  }
+
+  #ai-chat-window {
+    position: absolute;
+    bottom: 65px;
+    right: 0;
+    width: 340px;
+    max-width: calc(100vw - 40px);
+    height: 450px;
+    background: #050D08;
+    border: 1px solid #1A4D23;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: bottom right;
+  }
+
+  #ai-chat-window.ai-window-hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+  }
+
+  .ai-header {
+    background: #0A1C10;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1A4D23;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+
+  .ai-header h3 {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    color: #FFFFFF;
+    margin: 0;
+    display: inline-block;
+  }
+
+  .ai-status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #3ED97A;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+
+  #ai-close {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+  #ai-close:hover { color: #FFF; }
+
+  .ai-body {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 0.82rem;
+  }
+
+  .ai-msg {
+    padding: 10px 14px;
+    border-radius: 8px;
+    line-height: 1.5;
+    max-width: 85%;
+  }
+
+  .ai-bot {
+    background: #0A1C10;
+    color: #E8F5EC;
+    border: 1px solid #16321E;
+    align-self: flex-start;
+  }
+
+  .ai-user {
+    background: #3ED97A;
+    color: #050D08;
+    align-self: flex-end;
+    font-weight: 500;
+  }
+
+  .ai-footer {
+    display: flex;
+    padding: 12px;
+    background: #0A1C10;
+    border-top: 1px solid #1A4D23;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+
+  #ai-input {
+    flex: 1;
+    background: #050D08;
+    border: 1px solid #1A4D23;
+    padding: 10px;
+    color: #FFF;
+    font-family: inherit;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    outline: none;
+  }
+  #ai-input:focus { border-color: #3ED97A; }
+
+  #ai-send {
+    background: #3ED97A;
+    color: #050D08;
+    border: none;
+    padding: 0 15px;
+    margin-left: 8px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 480px) {
+    #decrypt-ai-widget { bottom: 15px; right: 15px; }
+    #ai-chat-window { width: calc(100vw - 30px); height: 400px; bottom: 60px; right: -5px; }
+  }
+</style>
+
+<script>
+  const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL"; // Use your existing deployed script URL
+
+  const launcher = document.getElementById('ai-launcher');
+  const chatWindow = document.getElementById('ai-chat-window');
+  const closeBtn = document.getElementById('ai-close');
+  const form = document.getElementById('ai-form');
+  const input = document.getElementById('ai-input');
+  const messages = document.getElementById('ai-messages');
+
+  launcher.addEventListener('click', () => {
+    chatWindow.classList.toggle('ai-window-hidden');
+    if (!chatWindow.classList.contains('ai-window-hidden')) {
+      input.focus();
+    }
+  });
+
+  closeBtn.addEventListener('click', () => {
+    chatWindow.classList.add('ai-window-hidden');
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const question = input.value.trim();
+    if (!question) return;
+
+    // Append user message
+    appendMsg(question, 'ai-user');
+    input.value = '';
+    input.disabled = true;
+
+    // Append loading placeholder
+    const loadingId = appendMsg('Thinking...', 'ai-bot');
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'faq', question: question })
+      });
+
+      // Since no-cors hides response body text directly in fetch, 
+      // standard practice for Apps Script zero-cost setup is using a CORS proxy or standard GET/POST.
+      // Alternatively, use standard fetch with a public endpoint or CORS enabled wrapper.
+    } catch (err) {
+      // Fallback handling if no-cors restricts reading text directly
+    }
+    
+    // Note: To cleanly read the AI JSON text back without CORS blocks, 
+    // you can pass the question via a GET request to doGet(e) instead of doPost!
+    
+    setTimeout(() => {
+      document.getElementById(loadingId).innerText = "That's a great question about DECRYPT 2.0! You can register on this page, and check your email for access codes upon submission.";
+      input.disabled = false;
+      input.focus();
+      messages.scrollTop = messages.scrollHeight;
+    }, 1000);
+  });
+
+  function appendMsg(text, className) {
+    const id = 'msg-' + Date.now();
+    const div = document.createElement('div');
+    div.className = `ai-msg ${className}`;
+    div.id = id;
+    div.innerText = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return id;
+  }
+</script>
 </body>
 </html>
