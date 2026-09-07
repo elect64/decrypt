@@ -229,17 +229,17 @@
                 </div>
 
                 <div class="field">
-                  <label for="reg-phone">Phone / WhatsApp</label>
+                  <label for="reg-phone">Phone / WhatsApp<span class="req">*</span></label>
                   <input type="tel" id="reg-phone" name="phone" autocomplete="tel" placeholder="Optional">
                 </div>
 
                 <div class="field">
-                  <label for="reg-location">City / Country</label>
+                  <label for="reg-location">City / Country<span class="req">*</span></label>
                   <input type="text" id="reg-location" name="location" autocomplete="address-level2" placeholder="e.g. Port Harcourt, Nigeria">
                 </div>
 
                 <div class="field">
-                  <label for="reg-identity">I am mainly a</label>
+                  <label for="reg-identity">I am mainly a<span class="req">*</span></label>
                   <select id="reg-identity" name="identity">
                     <option value="">Select one</option>
                     <option value="Student">Student</option>
@@ -251,7 +251,7 @@
                 </div>
 
                 <div class="field">
-                  <label for="reg-source">How did you hear about DECRYPT</label>
+                  <label for="reg-source">How did you hear about DECRYPT<span class="req">*</span></label>
                   <select id="reg-source" name="source">
                     <option value="">Select one</option>
                     <option value="Instagram">Instagram</option>
@@ -264,7 +264,7 @@
                 </div>
 
                 <div class="field field--full">
-                  <label>Tracks you're curious about</label>
+                  <label>Tracks you're curious about<span class="req">*</span></label>
                   <div class="track-pills" id="track-pills"></div>
                 </div>
 
@@ -274,7 +274,7 @@
                 </div>
 
                 <div class="field">
-                  <label for="reg-volunteer">Would You Like to Volunteer/Partner?</label>
+                  <label for="reg-volunteer">Would You Like to Volunteer/Partner?<span class="req">*</span></label>
                   <select id="reg-volunteer" name="volunteer">
                     <option value="">Select one</option>
                     <option value="Yes">Yes</option>
@@ -411,48 +411,80 @@
 <script src="js/register-main.js"></script>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxHaKEYwhGGeiQv64h9JogJkrqGVNuin6vCTSjQteVv9BGzyj6ZpeVH9ZKq_Ar6CPn_/exec"; 
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwdqm23kqzihRnuZpAFTC3YzcnUTWTdOFwjWh9_ssP4p-elxkHokNbIuLHObY3drUbXuQ/exec"; 
 
   const myForm = document.getElementById('register-form');
   const submitBtn = document.getElementById('reg-submit-btn');
   const formWrap = document.getElementById('reg-form-wrap');
   const successDiv = document.getElementById('reg-success');
   const accessCodeDisplay = document.getElementById('reg-access-code');
+  const fileInput = document.getElementById('reg-payment-proof');
+
+  // Utility to convert file to Base64
+  function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
 
   myForm.addEventListener('submit', async function(e) {
     e.preventDefault(); 
 
     const originalBtnText = submitBtn.innerHTML;
-    submitBtn.innerHTML = "<span class='btn-label'>VERIFYING...</span>";
+    submitBtn.innerHTML = "<span class='btn-label'>UPLOADING & VERIFYING...</span>";
     submitBtn.disabled = true;
 
-    const payload = {
-      fullName: document.getElementById('reg-name').value,
-      email: document.getElementById('reg-email').value,
-      phone: document.getElementById('reg-phone').value || "N/A",
-      location: document.getElementById('reg-location').value || "N/A",
-      identity: document.getElementById('reg-identity').value || "N/A",
-      source: document.getElementById('reg-source').value || "N/A",
-      volunteer: document.getElementById('reg-volunteer').value || "N/A",
-      track: "General Ticket" 
-    };
-
     try {
+      let fileBase64 = null;
+      let mimeType = null;
+      let fileName = null;
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        
+        if (file.size > 5 * 1024 * 1024) { 
+            alert("File is too large. Please upload an image or PDF under 5MB.");
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+            return;
+        }
+
+        const base64FullString = await getBase64(file);
+        const splitData = base64FullString.split(',');
+        fileBase64 = splitData[1];
+        mimeType = splitData[0].match(/:(.*?);/)[1];
+        fileName = file.name;
+      }
+
+      const payload = {
+        fullName: document.getElementById('reg-name').value,
+        email: document.getElementById('reg-email').value,
+        phone: document.getElementById('reg-phone').value || "N/A",
+        location: document.getElementById('reg-location').value || "N/A",
+        identity: document.getElementById('reg-identity').value || "N/A",
+        source: document.getElementById('reg-source').value || "N/A",
+        volunteer: document.getElementById('reg-volunteer').value || "N/A",
+        notes: document.getElementById('reg-notes') ? document.getElementById('reg-notes').value : "N/A",
+        track: "General Ticket",
+        fileName: fileName,
+        mimeType: mimeType,
+        fileBase64: fileBase64 
+      };
+
       await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors', 
         headers: {
-          // FIX: no-cors requires text/plain to successfully pass a JSON body
           'Content-Type': 'text/plain;charset=utf-8' 
         },
         body: JSON.stringify(payload)
       });
 
-      // Show your custom DECRYPT success UI
       formWrap.style.display = 'none';
       successDiv.style.display = 'block';
-      
-      // We cannot read the real code back due to no-cors, so we direct them to their email
       accessCodeDisplay.innerText = "CHECK EMAIL"; 
 
     } catch (err) {
