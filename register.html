@@ -714,10 +714,11 @@
   });
 
   form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const question = input.value.trim();
-    if (!question) return;
+  e.preventDefault();
+  const question = input.value.trim();
+  if (!question) return;
 
+<<<<<<< HEAD
     // Append user message
     appendMsg(question, 'ai-user');
     input.value = '';
@@ -751,6 +752,27 @@
       messages.scrollTop = messages.scrollHeight;
     }, 1000);
   });
+=======
+  appendMsg(question, 'ai-user');
+  input.value = '';
+  input.disabled = true;
+
+  const loadingId = appendMsg('Thinking...', 'ai-bot');
+
+  try {
+    // Send via GET query parameter so we can read the response text directly
+    const res = await fetch(`${SCRIPT_URL}?action=faq&question=${encodeURIComponent(question)}`);
+    const data = await res.json();
+
+    document.getElementById(loadingId).innerText = data.answer;
+  } catch (err) {
+    document.getElementById(loadingId).innerText = "Connection error. Please try again.";
+  }
+
+  input.disabled = false;
+  input.focus();
+});
+>>>>>>> 63d52c0 (changed appscript link 0909 v1)
 
   function appendMsg(text, className) {
     const id = 'msg-' + Date.now();
