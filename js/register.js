@@ -92,7 +92,7 @@ const DecryptRegister = (() => {
       phone: fd.get('phone') || '',
       location: fd.get('location') || '',
       identity: fd.get('identity') || '',
-      tracks: fd.getAll('tracks'),
+      track: fd.getAll('tracks').join(', ') || '',
       source: fd.get('source') || '',
       notes: fd.get('notes') || ''
     };
@@ -107,7 +107,7 @@ const DecryptRegister = (() => {
       data.phone ? `Phone / WhatsApp: ${data.phone}` : '',
       data.location ? `City / Country: ${data.location}` : '',
       data.identity ? `Mainly a: ${data.identity}` : '',
-      data.tracks.length ? `Tracks: ${data.tracks.join(', ')}` : '',
+      data.track ? `Tracks: ${data.track}` : '',
       data.source ? `Heard about DECRYPT via: ${data.source}` : '',
       data.notes ? `Notes: ${data.notes}` : ''
     ].filter(Boolean);

@@ -411,7 +411,7 @@
 <script src="js/register-main.js"></script>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFpYLNWXgjLO-27Txb2E-Qi3sLSy2WcEpmnhKvq_oYdA9sbK24NbzIQ-Fu20n-X6uapw/exec"; 
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxS7N4a6BMeMiIdlosMb1WpzuBsB1Yad4K5htp6Hla-HxUUOLtvh6uqEYObn3wM_GYD8w/exec"; // Use your existing deployed script URL
 
   const myForm = document.getElementById('register-form');
   const submitBtn = document.getElementById('reg-submit-btn');
@@ -468,7 +468,7 @@
         source: document.getElementById('reg-source').value || "N/A",
         volunteer: document.getElementById('reg-volunteer').value || "N/A",
         notes: document.getElementById('reg-notes') ? document.getElementById('reg-notes').value : "N/A",
-        track: "General Ticket",
+        track: Array.from(document.querySelectorAll('#track-pills input[type="checkbox"]:checked')).map(function(cb){ return cb.value; }).join(', ') || "N/A",
         fileName: fileName,
         mimeType: mimeType,
         fileBase64: fileBase64 
@@ -693,19 +693,19 @@
 </style>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzFpYLNWXgjLO-27Txb2E-Qi3sLSy2WcEpmnhKvq_oYdA9sbK24NbzIQ-Fu20n-X6uapw/exec"; // Use your existing deployed script URL
+  // SCRIPT_URL is already declared above — do NOT redeclare it here
 
   const launcher = document.getElementById('ai-launcher');
   const chatWindow = document.getElementById('ai-chat-window');
   const closeBtn = document.getElementById('ai-close');
-  const form = document.getElementById('ai-form');
-  const input = document.getElementById('ai-input');
-  const messages = document.getElementById('ai-messages');
+  const aiForm = document.getElementById('ai-form');
+  const aiInput = document.getElementById('ai-input');
+  const aiMessages = document.getElementById('ai-messages');
 
   launcher.addEventListener('click', () => {
     chatWindow.classList.toggle('ai-window-hidden');
     if (!chatWindow.classList.contains('ai-window-hidden')) {
-      input.focus();
+      aiInput.focus();
     }
   });
 
@@ -713,53 +713,39 @@
     chatWindow.classList.add('ai-window-hidden');
   });
 
-  form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const question = input.value.trim();
-  if (!question) return;
+  aiForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const question = aiInput.value.trim();
+    if (!question) return;
 
-    // Append user message
     appendMsg(question, 'ai-user');
-    input.value = '';
-    input.disabled = true;
+    aiInput.value = '';
+    aiInput.disabled = true;
 
-    // Append loading placeholder
     const loadingId = appendMsg('Thinking...', 'ai-bot');
 
     try {
-      const response = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'faq', question: question })
-      });
-
-      // Since no-cors hides response body text directly in fetch, 
-      // standard practice for Apps Script zero-cost setup is using a CORS proxy or standard GET/POST.
-      // Alternatively, use standard fetch with a public endpoint or CORS enabled wrapper.
+      // Use GET so Apps Script can respond with CORS-accessible JSON via doGet → handleGeminiFAQGet
+      const res = await fetch(SCRIPT_URL + '?action=faq&question=' + encodeURIComponent(question));
+      const data = await res.json();
+      document.getElementById(loadingId).innerText = data.answer || "I couldn't process that. Please try again.";
     } catch (err) {
-      // Fallback handling if no-cors restricts reading text directly
+      document.getElementById(loadingId).innerText = "Connection error. Please check your internet and try again.";
+    } finally {
+      aiInput.disabled = false;
+      aiInput.focus();
+      aiMessages.scrollTop = aiMessages.scrollHeight;
     }
-    
-    // Note: To cleanly read the AI JSON text back without CORS blocks, 
-    // you can pass the question via a GET request to doGet(e) instead of doPost!
-    
-    setTimeout(() => {
-      document.getElementById(loadingId).innerText = "That's a great question about DECRYPT 2.0! You can register on this page, and check your email for access codes upon submission.";
-      input.disabled = false;
-      input.focus();
-      messages.scrollTop = messages.scrollHeight;
-    }, 1000);
   });
 
   function appendMsg(text, className) {
     const id = 'msg-' + Date.now();
     const div = document.createElement('div');
-    div.className = `ai-msg ${className}`;
+    div.className = 'ai-msg ' + className;
     div.id = id;
     div.innerText = text;
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
+    aiMessages.appendChild(div);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
     return id;
   }
 </script>
