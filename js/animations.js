@@ -480,3 +480,145 @@ const DecryptVault = (() => {
 
   return { init, setTheme, destroy, nextScene };
 })();
+
+/* ==========================================================
+   DECRYPT HERO BANNER — pixel-unlock entrance
+   Draws a pixelated version of the banner image on the
+   canvas overlay, then dissolves pixel-by-pixel to reveal
+   the real image underneath. Fires from main.js via
+   DecryptBanner.reveal() after the loader exits.
+   ========================================================== */
+const DecryptBanner = (() => {
+  const TILE = 12; // pixel block size (px)
+  const DURATION = 1400; // ms for the full dissolve
+
+  function reveal() {
+    const wrap  = document.getElementById('hero-banner-wrap');
+    const img   = document.getElementById('hero-banner-img');
+    const cvs   = document.getElementById('hero-banner-canvas');
+    if (!wrap || !img || !cvs) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { img.style.opacity = '1'; return; }
+
+    // Make the real image invisible until we dissolve onto it
+    img.style.opacity = '0';
+    img.style.transition = 'none';
+
+    const doReveal = () => {
+      const W = wrap.offsetWidth;
+      const H = img.offsetHeight || img.naturalHeight * (W / img.naturalWidth);
+      if (!W || !H) { img.style.opacity = '1'; return; }
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      cvs.width  = W * dpr;
+      cvs.height = H * dpr;
+      cvs.style.width  = W + 'px';
+      cvs.style.height = H + 'px';
+      wrap.style.height = H + 'px';
+
+      const ctx = cvs.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Offscreen canvas to sample actual image pixels
+      const off = document.createElement('canvas');
+      off.width = W; off.height = H;
+      const octx = off.getContext('2d');
+      octx.drawImage(img, 0, 0, W, H);
+
+      const cols = Math.ceil(W / TILE);
+      const rows = Math.ceil(H / TILE);
+      const total = cols * rows;
+
+      // Shuffle tile indices for a random dissolve order
+      const order = Array.from({ length: total }, (_, i) => i);
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+
+      let revealed = 0;
+      const tilesPerFrame = Math.max(1, Math.floor(total / (DURATION / 16)));
+
+      function step() {
+        const end = Math.min(revealed + tilesPerFrame, total);
+        for (let k = revealed; k < end; k++) {
+          const idx = order[k];
+          const col = idx % cols;
+          const row = Math.floor(idx / cols);
+          const x = col * TILE, y = row * TILE;
+          const tw = Math.min(TILE, W - x), th = Math.min(TILE, H - y);
+          // Sample average colour from the real image
+          const data = octx.getImageData(x + tw / 2 | 0, y + th / 2 | 0, 1, 1).data;
+          ctx.fillStyle = `rgb(${data[0]},${data[1]},${data[2]})`;
+          ctx.fillRect(x, y, tw, th);
+        }
+        revealed = end;
+
+        if (revealed < total) {
+          requestAnimationFrame(step);
+        } else {
+          // All tiles drawn — now crossfade real image in
+          img.style.transition = 'opacity 0.45s ease';
+          img.style.opacity = '1';
+          setTimeout(() => {
+            cvs.style.transition = 'opacity 0.35s ease';
+            cvs.style.opacity = '0';
+            setTimeout(() => { cvs.style.display = 'none'; }, 380);
+          }, 80);
+        }
+      }
+      requestAnimationFrame(step);
+    };
+
+    if (img.complete && img.naturalWidth) {
+      doReveal();
+    } else {
+      img.addEventListener('load', doReveal, { once: true });
+      img.addEventListener('error', () => { img.style.opacity = '1'; }, { once: true });
+    }
+  }
+
+  return { reveal };
+})();
+
+/* ==========================================================
+   DECRYPT NAV LOGO — unscramble text animation
+   Runs once when the page becomes ready. Cycles through
+   random characters before locking onto "DECRYPT".
+   ========================================================== */
+const DecryptLogoUnscramble = (() => {
+  const CHARS  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@%$';
+  const TARGET = 'DECRYPT';
+  const CHAR_SCRAMBLE_FRAMES = 8;  // random frames per character before it locks
+  const CHAR_INTERVAL = 42;        // ms between animation frames
+
+  function run() {
+    const el = document.getElementById('logo-text');
+    if (!el) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { el.textContent = TARGET; return; }
+
+    let frame = 0;
+    const totalFrames = TARGET.length * CHAR_SCRAMBLE_FRAMES;
+
+    const id = setInterval(() => {
+      let out = '';
+      for (let i = 0; i < TARGET.length; i++) {
+        const lockFrame = i * CHAR_SCRAMBLE_FRAMES;
+        if (frame >= lockFrame + CHAR_SCRAMBLE_FRAMES) {
+          out += TARGET[i];
+        } else if (frame >= lockFrame) {
+          out += CHARS[Math.floor(Math.random() * CHARS.length)];
+        } else {
+          out += TARGET[i];
+        }
+      }
+      el.textContent = out;
+      frame++;
+      if (frame > totalFrames) { el.textContent = TARGET; clearInterval(id); }
+    }, CHAR_INTERVAL);
+  }
+
+  return { run };
+})();

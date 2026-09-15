@@ -57,3 +57,32 @@
 @media (max-width: 360px) {
   .countdown-grid { gap: 0.6rem; }
 }
+
+/* ---------- Hero banner ---------- */
+@media (max-width: 768px) {
+  .hero-banner-wrap { max-width: 100%; }
+}
+
+/* ---------- Speaker wall (glass cards) ---------- */
+@media (max-width: 768px) {
+  .speaker-wall { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+}
+@media (max-width: 420px) {
+  .speaker-wall { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sp-name { font-size: 0.88rem; }
+}
+
+/* ---------- Knowledge folders ---------- */
+@media (max-width: 768px) {
+  .knowledge-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 24px 16px; }
+  .folder-3d { width: 96px; height: 76px; }
+}
+@media (max-width: 420px) {
+  .knowledge-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---------- PDF modal ---------- */
+@media (max-width: 768px) {
+  .pdf-modal { height: 92vh; border-radius: 12px 12px 0 0; }
+  .pdf-modal-veil { padding: 0; align-items: flex-end; }
+}

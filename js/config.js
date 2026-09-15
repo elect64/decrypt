@@ -8,7 +8,7 @@
 const DECRYPT_CONFIG = {
 
   // DECRYPT 2.0 target date — the only place this should live.
-  COUNTDOWN_TARGET_DATE: "2026-10-01T09:00:00",
+  COUNTDOWN_TARGET_DATE: "2026-10-23T09:00:00",
 
   THEME_DEFAULT: "dark",   // "dark" | "light" — DECRYPT green stays default
   SOUND_DEFAULT: "on",     // "on" | "off"

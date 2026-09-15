@@ -46,7 +46,7 @@
   <!-- HEADER / ACCESS CONSOLE -->
   <header class="header">
     <button class="logo" id="logo-btn" aria-label="DECRYPT — home">
-      <span class="dot" aria-hidden="true"></span><span>DECRYPT</span>
+      <span class="dot" aria-hidden="true"></span><span id="logo-text">DECRYPT</span>
     </button>
 
     <nav class="nav-desktop" aria-label="Primary">
@@ -92,9 +92,14 @@
       <div class="section-inner hero-grid">
         <div>
           <p class="hero-kicker">A movement for young technology enthusiasts</p>
-          <h1 class="hero-title">
-            <span class="line"><span>DECRYPT</span></span>
-          </h1>
+          <!-- Banner image replaces the raw DECRYPT text.
+               Place your banner at assets/images/hero-banner.png
+               (or .jpg / .webp — update src below to match).
+               The pixel-unlock canvas is drawn on top then fades away. -->
+          <div class="hero-banner-wrap" id="hero-banner-wrap" aria-label="DECRYPT">
+            <img src="assets/decrypt_banner.png" alt="DECRYPT" class="hero-banner-img" id="hero-banner-img" draggable="false">
+            <canvas class="hero-banner-canvas" id="hero-banner-canvas" aria-hidden="true"></canvas>
+          </div>
           <p class="hero-sub">Knowledge should not stay locked. DECRYPT helps young enthusiasts, creatives, learners and builders unlock the knowledge, people, ideas and opportunities that change what's possible from wherever they're starting.</p>
           <div class="hero-meta">
             <div><strong>Flagship</strong>Annual DECRYPT Conference</div>
@@ -181,8 +186,8 @@
     <!-- 09 — PEOPLE -->
     <section id="people" class="section">
       <div class="section-inner">
-        <p class="eyebrow">The people behind the knowledge</p>
-        <h2 data-reveal>Speakers, organizers, a community — not a team page.</h2>
+        <p class="eyebrow">Pioneers Of The Vison</p>
+        <h2 data-reveal>Speakers, organizers, not a team page.</h2>
         <div class="speaker-wall" id="speaker-wall" data-reveal style="margin-top:48px;"></div>
       </div>
     </section>
@@ -435,7 +440,7 @@
 </style>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHKasH5PO7eFU2lscek_mkew5BoU7FhkDxDLZTuzMGcvnKFBNTSVrxwZrZs9vU8J-z3Q/exec"; // Use your existing deployed script URL
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyewL7-WGXdC1WtK8ycSAiLWhaaeaSUU2UafuRkNbGFIbzy7a3P1jpN9PhsgFxqfyR2LA/exec"; // Use your existing deployed script URL
 
 
   const launcher = document.getElementById('ai-launcher');

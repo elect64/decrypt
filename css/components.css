@@ -209,3 +209,305 @@
 
 /* ---------- Theme wipe overlay ---------- */
 .theme-wipe { position: fixed; inset: 0; z-index: 8000; pointer-events: none; opacity: 0; }
+
+/* ---------- Hero banner (replaces raw DECRYPT text) ---------- */
+.hero-banner-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin: 18px 0 24px;
+  line-height: 0;
+  user-select: none;
+}
+.hero-banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0; /* revealed by pixel-unlock JS */
+}
+.hero-banner-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---------- Nav logo unscramble ---------- */
+#logo-text {
+  display: inline-block;
+  letter-spacing: 0.12em;
+}
+
+/* ---------- Glassmorphism speaker cards ---------- */
+.speaker-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+.speaker-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.28);
+  transition: box-shadow var(--t-slow), transform var(--t-slow);
+}
+.speaker-card:hover,
+.speaker-card:focus-visible { box-shadow: 0 16px 48px rgba(0,0,0,0.4); outline: none; }
+.speaker-card.is-active { transform: scale(1.03); }
+
+.sp-photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+.sp-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: grayscale(100%) contrast(1.05);
+  transform: scale(1);
+  transition: filter 0.55s cubic-bezier(0.16,1,0.3,1),
+              transform 0.55s cubic-bezier(0.16,1,0.3,1);
+  display: block;
+}
+.speaker-card.is-active .sp-photo,
+.speaker-card:hover .sp-photo {
+  filter: grayscale(0%) contrast(1);
+  transform: scale(1.06);
+}
+
+.sp-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  background: var(--c-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  color: var(--c-accent);
+  letter-spacing: 0.05em;
+}
+
+/* Glass overlay at bottom */
+.sp-glass-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 32px 18px 18px;
+  background: linear-gradient(
+    to top,
+    rgba(3, 19, 10, 0.88) 0%,
+    rgba(3, 19, 10, 0.55) 55%,
+    transparent 100%
+  );
+  backdrop-filter: blur(6px) saturate(130%);
+  -webkit-backdrop-filter: blur(6px) saturate(130%);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.sp-role {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: 4px;
+}
+.sp-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: var(--c-text);
+  line-height: 1.15;
+}
+.sp-note {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--c-text-secondary);
+  margin-top: 5px;
+  text-transform: none;
+}
+
+/* ---------- 3D Knowledge Folders ---------- */
+.knowledge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 32px 24px;
+  perspective: 1200px;
+}
+
+.folder-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  animation: folderFloat var(--float-dur, 3.8s) ease-in-out var(--float-delay, 0s) infinite;
+}
+.folder-item:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 6px; border-radius: 4px; }
+
+@keyframes folderFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+.folder-3d {
+  width: 120px;
+  height: 96px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+}
+.folder-item:hover .folder-3d,
+.folder-item:focus-visible .folder-3d {
+  transform: rotateY(-18deg) rotateX(8deg) scale(1.08);
+}
+
+/* Back panel */
+.f-back {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 82%;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 0 6px 6px 6px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+
+/* Tab */
+.f-tab {
+  position: absolute;
+  top: 0; left: 0;
+  width: 42%; height: 18%;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+.f-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 12px; height: 12px;
+  background: var(--c-bg);
+  border-radius: 6px 0 0 0;
+  border-left: 1px solid var(--c-border);
+  border-top: 1px solid var(--c-border);
+}
+
+/* Shine */
+.f-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: 0 6px 6px 6px;
+  background: linear-gradient(135deg, rgba(156,240,176,0.13) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* Accent stripe */
+.f-stripe {
+  position: absolute;
+  left: 14px; top: 22%;
+  width: calc(100% - 28px); height: 3px;
+  background: var(--c-accent);
+  opacity: 0.5;
+  border-radius: 2px;
+}
+
+/* Locked overlay */
+.folder-item[data-locked="true"] .f-back,
+.folder-item[data-locked="true"] .f-tab {
+  opacity: 0.45;
+}
+.folder-item[data-locked="true"] .f-stripe { background: var(--c-text-secondary); }
+
+.folder-label {
+  text-align: center;
+}
+.f-cat {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+.folder-item[data-locked="true"] .f-cat { color: var(--c-text-secondary); }
+.f-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  margin-top: 3px;
+  line-height: 1.2;
+}
+.f-status-tag {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--c-text-secondary);
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- PDF Viewer Modal ---------- */
+.pdf-modal-veil {
+  position: fixed; inset: 0;
+  background: rgba(3,10,6,0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 8000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1),
+              visibility 0.35s;
+}
+.pdf-modal-veil.open { opacity: 1; visibility: visible; }
+.pdf-modal {
+  width: 100%; max-width: 860px;
+  height: 88vh;
+  background: var(--c-space);
+  border: 1px solid var(--c-border);
+  border-radius: 12px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  transform: translateY(18px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+.pdf-modal-veil.open .pdf-modal { transform: translateY(0) scale(1); }
+.pdf-modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; border-bottom: 1px solid var(--c-border);
+  flex-shrink: 0; gap: 12px;
+}
+.pdf-modal-head h3 {
+  font-family: var(--font-display); font-size: 0.88rem; letter-spacing: 0.06em;
+  text-transform: uppercase; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pdf-modal-close {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border: 1px solid var(--c-border); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color var(--t-fast);
+}
+.pdf-modal-close:hover { border-color: var(--c-text-secondary); }
+.pdf-modal-close svg { width: 12px; height: 12px; stroke: var(--c-text); fill: none; stroke-width: 1.8; }
+.pdf-modal-body { flex: 1; overflow: hidden; position: relative; }
+.pdf-modal-body iframe {
+  width: 100%; height: 100%; border: none; display: block;
+}
+.pdf-locked-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  height: 100%; text-align: center; padding: 40px;
+}
+.pdf-locked-state p { color: var(--c-text-secondary); font-size: 0.88rem; max-width: 340px; text-transform: none; }

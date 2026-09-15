@@ -87,12 +87,33 @@ const DecryptUI = (() => {
   function renderSpeakers() {
     const el = document.getElementById('speaker-wall');
     if (!el) return;
-    el.innerHTML = SPEAKER_DATA.map(s => `
-      <div class="speaker-card">
-        <span class="sp-role">${s.role}</span>
-        <span class="sp-name">${s.name}</span>
-        <span class="sp-note">${s.note}</span>
-      </div>`).join('');
+    el.innerHTML = SPEAKER_DATA.map(s => {
+      const initials = s.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      const photoHtml = s.img
+        ? `<img class="sp-photo" src="${s.img}" alt="${s.name}" loading="lazy">`
+        : `<div class="sp-photo-placeholder sp-photo">${initials}</div>`;
+      return `
+        <div class="speaker-card" tabindex="0" role="button" aria-label="${s.name}, ${s.role}">
+          <div class="sp-photo-wrap">
+            ${photoHtml}
+          </div>
+          <div class="sp-glass-overlay">
+            <span class="sp-role">${s.role}</span>
+            <span class="sp-name">${s.name}</span>
+            <span class="sp-note">${s.note}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('.speaker-card').forEach(card => {
+      const activate = () => {
+        const wasActive = card.classList.contains('is-active');
+        el.querySelectorAll('.speaker-card').forEach(c => c.classList.remove('is-active'));
+        if (!wasActive) { card.classList.add('is-active'); DecryptSound.click(); }
+      };
+      card.addEventListener('click', activate);
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+    });
   }
 
   function renderMovement() {
@@ -123,13 +144,96 @@ const DecryptUI = (() => {
   function renderKnowledge() {
     const el = document.getElementById('knowledge-grid');
     if (!el) return;
-    el.innerHTML = KNOWLEDGE_DATA.map(k => `
-      <div class="file-record">
-        <span class="f-id">FILE ${k.id}</span>
-        <span class="f-cat">${k.category}</span>
-        <span class="f-title">${k.title}</span>
-        <span class="f-status">${k.status}</span>
-      </div>`).join('');
+    const locked = (k) => k.status === 'Locked' || !k.pdf;
+
+    el.innerHTML = KNOWLEDGE_DATA.map((k, i) => {
+      const isLocked = locked(k);
+      const floatDur  = (3.4 + i * 0.28).toFixed(2) + 's';
+      const floatDel  = (i * 0.19).toFixed(2) + 's';
+      return `
+        <div class="folder-item" data-locked="${isLocked}" data-pdf="${k.pdf || ''}"
+             data-title="${k.title}" tabindex="0" role="button"
+             aria-label="Open ${k.title}"
+             style="--float-dur:${floatDur}; --float-delay:${floatDel}">
+          <div class="folder-3d">
+            <div class="f-tab"></div>
+            <div class="f-back">
+              <div class="f-shine"></div>
+              <div class="f-stripe"></div>
+            </div>
+          </div>
+          <div class="folder-label">
+            <span class="f-cat">${k.category}</span>
+            <span class="f-title">${k.title}</span>
+            <span class="f-status-tag">${k.status}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    el.querySelectorAll('.folder-item').forEach(item => {
+      const open = () => {
+        DecryptSound.reveal();
+        openPdfModal(item.dataset.title, item.dataset.pdf, item.dataset.locked === 'true');
+      };
+      item.addEventListener('click', open);
+      item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
+  }
+
+  /* ---------- PDF Modal ---------- */
+  function initPdfModal() {
+    // Inject modal markup once
+    if (document.getElementById('pdf-modal-veil')) return;
+    const veil = document.createElement('div');
+    veil.id = 'pdf-modal-veil';
+    veil.className = 'pdf-modal-veil';
+    veil.setAttribute('role', 'dialog');
+    veil.setAttribute('aria-modal', 'true');
+    veil.setAttribute('aria-labelledby', 'pdf-modal-title');
+    veil.innerHTML = `
+      <div class="pdf-modal" id="pdf-modal">
+        <div class="pdf-modal-head">
+          <h3 id="pdf-modal-title">Document</h3>
+          <button class="pdf-modal-close" id="pdf-modal-close" aria-label="Close">
+            <svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+          </button>
+        </div>
+        <div class="pdf-modal-body" id="pdf-modal-body"></div>
+      </div>`;
+    document.body.appendChild(veil);
+
+    const closeModal = () => {
+      veil.classList.remove('open');
+      document.getElementById('pdf-modal-body').innerHTML = '';
+      document.body.style.overflow = '';
+    };
+    document.getElementById('pdf-modal-close').addEventListener('click', closeModal);
+    veil.addEventListener('click', e => { if (e.target === veil) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  }
+
+  function openPdfModal(title, pdfPath, isLocked) {
+    const veil  = document.getElementById('pdf-modal-veil');
+    const body  = document.getElementById('pdf-modal-body');
+    const titleEl = document.getElementById('pdf-modal-title');
+    if (!veil) return;
+
+    titleEl.textContent = title;
+    document.body.style.overflow = 'hidden';
+
+    if (isLocked || !pdfPath) {
+      body.innerHTML = `
+        <div class="pdf-locked-state">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent)" stroke-width="1.4">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <p>This file is locked — it will be accessible when released for this chapter.</p>
+        </div>`;
+    } else {
+      body.innerHTML = `<iframe src="${pdfPath}#toolbar=0&navpanes=0" title="${title}"></iframe>`;
+    }
+    veil.classList.add('open');
+    document.getElementById('pdf-modal-close').focus();
   }
 
   function renderSocials() {
@@ -205,6 +309,7 @@ const DecryptUI = (() => {
     wireCTAs();
     initNav();
     initEasterEggs();
+    initPdfModal();
     const fy = document.getElementById('footer-year');
     if (fy) fy.textContent = new Date().getFullYear();
   }

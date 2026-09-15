@@ -43,13 +43,10 @@
   }
 
   function revealHero() {
-    document.querySelectorAll('.hero-title .line span').forEach((el, i) => {
-      el.style.transform = 'translateY(110%)';
-      requestAnimationFrame(() => {
-        el.style.transition = `transform 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 90}ms`;
-        el.style.transform = 'translateY(0)';
-      });
-    });
+    // Banner pixel-unlock (replaces the old text slide)
+    DecryptBanner.reveal();
+    // Nav logo unscrambles simultaneously
+    DecryptLogoUnscramble.run();
   }
 
   function init() {
