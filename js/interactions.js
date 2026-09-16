@@ -316,3 +316,24 @@ const DecryptUI = (() => {
 
   return { init, toast };
 })();
+
+(function () {
+  const dialog = document.getElementById('privacy-policy-dialog');
+  const openBtn = document.getElementById('privacy-policy-button');
+  const closeBtn = document.getElementById('privacy-policy-close');
+
+  openBtn.addEventListener('click', () => {
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', ''); // fallback for old browsers
+  });
+
+  closeBtn.addEventListener('click', () => dialog.close());
+
+  // Close when clicking the dark backdrop around the dialog
+  dialog.addEventListener('click', (e) => {
+    const r = dialog.getBoundingClientRect();
+    const inside = e.clientY >= r.top && e.clientY <= r.bottom &&
+                   e.clientX >= r.left && e.clientX <= r.right;
+    if (!inside) dialog.close();
+  });
+})();
