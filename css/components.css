@@ -301,7 +301,7 @@
 .sp-glass-overlay {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  padding: 32px 18px 18px;
+  padding: 18px 18px 18px;
   background: linear-gradient(
     to top,
     rgba(3, 19, 10, 0.88) 0%,
@@ -513,6 +513,7 @@
 .pdf-locked-state p { color: var(--c-text-secondary); font-size: 0.88rem; max-width: 340px; text-transform: none; }
 
 #privacy-policy-dialog {
+  cursor: default;
   width: min(760px, 92vw);
   max-height: 85vh;
   padding: 0;
