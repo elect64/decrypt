@@ -22,8 +22,8 @@ const DECRYPT_CONFIG = {
   SOCIAL_LINKS: {
     instagram: "https://www.instagram.com/officialdecrypt_?igsh=dGdjZDdlODBmZTl2",
     facebook:  "https://www.facebook.com/share/19V4zN4ikG/",
-    whatsapp:  "https://wa.link/llj78c",
+    whatsapp:  "https://wa.link/qfpwcl",
     linkedin:  "https://www.linkedin.com/company/decrypt144/",
-    email:     "teamdecryptinfo@gmail.com"
+    email:     "mailto:teamdecryptinfo@gmail.com"
   }
 };
