@@ -1,8 +1,13 @@
 (function () {
   const STORAGE_KEY = 'decrypt-app-toast-shown';
+  const MAX_SHOWS = 3;
+
+  let currentCount = 0;
 
   try {
-    if (localStorage.getItem(STORAGE_KEY) === 'true') return;
+    const storedValue = Number(localStorage.getItem(STORAGE_KEY) || '0');
+    currentCount = Number.isFinite(storedValue) ? storedValue : 0;
+    if (currentCount >= MAX_SHOWS) return;
   } catch (error) {
     console.warn('Decrypt app toast storage unavailable:', error);
   }
@@ -19,7 +24,7 @@
       .decrypt-app-toast {
         position: fixed;
         left: 50%;
-        bottom: 22px;
+        top: 22px;
         transform: translate(-50%, 120%);
         width: min(480px, calc(100vw - 28px));
         z-index: 100000;
@@ -92,7 +97,7 @@
 
       @media (max-width: 480px) {
         .decrypt-app-toast {
-          bottom: 18px;
+          top: 18px;
           width: calc(100vw - 20px);
         }
 
@@ -129,7 +134,7 @@
   `;
 
   try {
-    localStorage.setItem(STORAGE_KEY, 'true');
+    localStorage.setItem(STORAGE_KEY, String(currentCount + 1));
   } catch (error) {
     console.warn('Decrypt app toast could not persist state:', error);
   }
