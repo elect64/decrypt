@@ -9,7 +9,7 @@
 
   if (document.getElementById('decrypt-app-toast')) return;
 
-  const apkPath = 'assets/decrypt_app.apk';
+  const apkPath = 'assets/Decrypt.apk';
   const styleId = 'decrypt-app-toast-styles';
 
   if (!document.getElementById(styleId)) {
