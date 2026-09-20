@@ -13,9 +13,17 @@
   --c-white:        #FFFFFF;
   --c-black:        #000000;
 
+  /* ---- background system ---- */
+  --bg-1: #060A07;
+  --bg-2: #090F0A;
+  --bg-3: #0D1810;
+  --bg-4: rgba(18,128,58,0.30);
+  --bg-5: rgba(156,240,176,0.28);
+  --bg-6: rgba(245,158,11,0.10);
+
   /* ---- dark mode (default): the DECRYPT universe ---- */
-  --c-bg:            #07220C;
-  --c-space:         #03130A;
+  --c-bg:            #060A07;
+  --c-space:         #090F0A;
   --c-surface:       #10331B;
   --c-text:          #FFFFFF;
   --c-text-secondary: rgba(255,255,255,0.6);
@@ -54,9 +62,16 @@
 }
 
 [data-theme="light"] {
-  --c-bg:             #F5F6F1;
-  --c-space:          #E7EBE2;
-  --c-surface:        #ECEFE7;
+  --bg-1: #F3F5EE;
+  --bg-2: #E9EDE2;
+  --bg-3: #F7F8F3;
+  --bg-4: rgba(18,128,58,0.18);
+  --bg-5: rgba(84,196,122,0.16);
+  --bg-6: rgba(245,158,11,0.08);
+
+  --c-bg:             #F3F5EE;
+  --c-space:          #E9EDE2;
+  --c-surface:        #EEF2EA;
   --c-text:           #08130C;
   --c-text-secondary: rgba(8,19,12,0.6);
   --c-border:         rgba(8,19,12,0.12);

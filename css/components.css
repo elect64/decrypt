@@ -128,17 +128,66 @@
 .btn:hover .btn-arrow, .btn:focus-visible .btn-arrow { transform: translateX(4px); }
 
 /* ---------- Movement nodes ---------- */
-.node-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--c-border); border: 1px solid var(--c-border); }
-.node {
-  background: var(--c-bg); padding: 32px 24px; min-height: 230px;
-  display: flex; flex-direction: column; justify-content: space-between; text-align: left;
-  transition: background var(--t-slow);
+.node-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
 }
-.node:hover, .node:focus-visible, .node.is-active { background: var(--c-surface); }
-.node .n-index { font-family: var(--font-mono); font-size: 0.68rem; color: var(--c-text-secondary); }
-.node .n-title { font-family: var(--font-display); font-size: 1.35rem; text-transform: uppercase; margin-top: auto; }
-.node .n-detail { max-height: 0; overflow: hidden; transition: max-height var(--t-slow); font-size: 0.86rem; color: var(--c-text-secondary); }
-.node.is-active .n-detail { max-height: 200px; margin-top: 12px; }
+
+.node {
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 18px;
+  padding: 18px 18px 16px;
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
+  transition: transform var(--t-slow), border-color var(--t-slow), background var(--t-slow), box-shadow var(--t-slow);
+}
+
+.node:hover, .node:focus-visible, .node.is-active {
+  background: var(--c-surface);
+  border-color: color-mix(in srgb, var(--c-accent) 60%, var(--c-border));
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}
+
+.node .n-index {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--c-text-secondary);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.node .n-title {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+
+.node .n-detail {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--t-slow), opacity var(--t-slow), margin-top var(--t-slow);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--c-text-secondary);
+  opacity: 0;
+}
+
+.node.is-active .n-detail {
+  max-height: 180px;
+  margin-top: 8px;
+  opacity: 1;
+}
 
 /* ---------- Chapter / archive list ---------- */
 .chapter-list { border-top: 1px solid var(--c-border); }
