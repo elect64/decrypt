@@ -14,8 +14,44 @@
 
   if (document.getElementById('decrypt-app-toast')) return;
 
-  const apkPath = 'assets/Decrypt.apk';
+  const apkPath = 'https://raw.githubusercontent.com/elect64/decrypt/main/assets/Decrypt.apk';
   const styleId = 'decrypt-app-toast-styles';
+
+  function trackAndDownloadApp() {
+    const ua = window.navigator && window.navigator.userAgent ? window.navigator.userAgent : '';
+    let os = 'Unknown';
+
+    if (/Android/i.test(ua)) os = 'Android';
+    else if (/iPhone|iPad|iPod/i.test(ua)) os = 'iOS';
+    else if (/Windows/i.test(ua)) os = 'Windows';
+    else if (/Mac/i.test(ua)) os = 'Mac OS';
+    else if (/Linux/i.test(ua)) os = 'Linux';
+
+    const apiBase = window.API = SCRIPT_URL || '';
+    if (apiBase) {
+      const separator = apiBase.includes('?') ? '&' : '?';
+      const logUrl = apiBase + separator + 'action=log_download&os=' + encodeURIComponent(os);
+      fetch(logUrl, { cache: 'no-store' }).catch(function (error) {
+        console.error('Analytics log failed', error);
+      });
+    }
+
+    const a = document.createElement('a');
+    a.href = apkPath;
+    a.download = 'Decrypt.apk';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    if (window.DecryptUI && typeof window.DecryptUI.toast === 'function') {
+      window.DecryptUI.toast('Downloading DECRYPT App...');
+    } else if (typeof window.toast === 'function') {
+      window.toast('Downloading DECRYPT App...');
+    }
+  }
+
+  window.trackAndDownloadApp = trackAndDownloadApp;
 
   if (!document.getElementById(styleId)) {
     const style = document.createElement('style');
@@ -140,6 +176,14 @@
   }
 
   document.body.appendChild(toast);
+
+  const downloadButton = toast.querySelector('.decrypt-app-toast__cta');
+  if (downloadButton) {
+    downloadButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      trackAndDownloadApp();
+    });
+  }
 
   requestAnimationFrame(function () {
     toast.classList.add('is-visible');
