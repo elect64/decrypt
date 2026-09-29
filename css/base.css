@@ -90,7 +90,6 @@ body::before {
   border-radius: 50%;
   background: rgba(18, 128, 58, 0.30);
   filter: blur(90px);
-  animation: aurora-drift-a 26s ease-in-out alternate infinite;
   opacity: 0.9;
 }
 
@@ -102,7 +101,6 @@ body::after {
   border-radius: 50%;
   background: rgba(156, 240, 176, 0.24);
   filter: blur(90px);
-  animation: aurora-drift-b 32s ease-in-out alternate infinite;
   opacity: 0.9;
 }
 
@@ -115,7 +113,6 @@ body::after {
   background: rgba(245, 158, 11, 0.10);
   transform: translateX(-50%);
   filter: blur(92px);
-  animation: aurora-drift-c 40s ease-in-out alternate-reverse infinite;
   opacity: 0.65;
 }
 
@@ -133,24 +130,6 @@ footer,
 #decrypt-ai-widget {
   position: relative;
   z-index: 1;
-}
-
-@keyframes aurora-drift-a {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(-4vmax, 2vmax, 0) scale(1.08); }
-  100% { transform: translate3d(4vmax, -2vmax, 0) scale(0.96); }
-}
-
-@keyframes aurora-drift-b {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(3vmax, -3vmax, 0) scale(1.12); }
-  100% { transform: translate3d(-3vmax, 2vmax, 0) scale(0.94); }
-}
-
-@keyframes aurora-drift-c {
-  0% { transform: translate(-50%, 0) scale(1); }
-  50% { transform: translate(-50%, -2.5vmax) scale(1.06); }
-  100% { transform: translate(-50%, 3vmax) scale(0.92); }
 }
 
 [data-theme="light"] body::before,
