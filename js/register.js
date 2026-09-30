@@ -1,10 +1,6 @@
 /* ==========================================================
-   DECRYPT REGISTER
-   Renders the tracks/FAQ/steps and drives the registration
-   form: validation, submission (configurable endpoint with
-   an email fallback), and the success state.
+   DECRYPT REGISTER (Unified Base64 Version)
    ========================================================== */
-
 const DecryptRegister = (() => {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -55,7 +51,7 @@ const DecryptRegister = (() => {
       </label>`).join('');
   }
 
-  /* ---------- Validation ---------- */
+  /* ---------- Validation & Submission ---------- */
   function setError(field, message) {
     const wrap = field.closest('.field');
     if (!wrap) return;
@@ -84,71 +80,30 @@ const DecryptRegister = (() => {
     return firstInvalid;
   }
 
-  function collectData(form) {
-    const fd = new FormData(form);
-    return {
-      name: fd.get('name') || '',
-      email: fd.get('email') || '',
-      phone: fd.get('phone') || '',
-      location: fd.get('location') || '',
-      identity: fd.get('identity') || '',
-      track: fd.getAll('tracks').join(', ') || '',
-      source: fd.get('source') || '',
-      notes: fd.get('notes') || ''
-    };
-  }
-
-  function buildMailto(data) {
-    const s = DECRYPT_CONFIG.SOCIAL_LINKS;
-    const subject = encodeURIComponent(`DECRYPT 2.0 registration — ${data.name}`);
-    const bodyLines = [
-      `Name: ${data.name}`,
-      `Email: ${data.email}`,
-      data.phone ? `Phone / WhatsApp: ${data.phone}` : '',
-      data.location ? `City / Country: ${data.location}` : '',
-      data.identity ? `Mainly a: ${data.identity}` : '',
-      data.track ? `Tracks: ${data.track}` : '',
-      data.source ? `Heard about DECRYPT via: ${data.source}` : '',
-      data.notes ? `Notes: ${data.notes}` : ''
-    ].filter(Boolean);
-    const body = encodeURIComponent(bodyLines.join('\n'));
-    return `mailto:${s.email}?subject=${subject}&body=${body}`;
-  }
-
-  function generateAccessCode() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let code = '';
-    for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
-    return `DCRPT-${code}`;
-  }
-
-  async function submitToEndpoint(data) {
-    const endpoint = DECRYPT_CONFIG.REGISTRATION_ENDPOINT;
-    if (!endpoint) return { ok: false, skipped: true };
-    try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(data)
-      });
-      return { ok: res.ok, skipped: false };
-    } catch (err) {
-      return { ok: false, skipped: false, error: err };
-    }
+  function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
   }
 
   function showSuccess(formWrap, successWrap) {
     formWrap.style.display = 'none';
     successWrap.classList.add('active');
+    
+    // Shows CHECK EMAIL directly, skips random hash UI bug
     const codeEl = document.getElementById('reg-access-code');
-    if (codeEl) codeEl.textContent = generateAccessCode();
+    if (codeEl) codeEl.textContent = 'CHECK EMAIL'; 
+
     if (window.DecryptSound) DecryptSound.thunk();
     successWrap.setAttribute('tabindex', '-1');
     successWrap.focus({ preventScroll: true });
     successWrap.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
   }
 
-  function initForm() {
+function initForm() {
     const form = document.getElementById('register-form');
     if (!form) return;
     const formWrap = document.getElementById('reg-form-wrap');
@@ -158,6 +113,7 @@ const DecryptRegister = (() => {
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
       const firstInvalid = validateForm(form);
       if (firstInvalid) {
         firstInvalid.focus();
@@ -165,22 +121,39 @@ const DecryptRegister = (() => {
         return;
       }
 
-      const data = collectData(form);
+      const originalBtnText = submitLabel ? submitLabel.textContent : "Request access";
       submitBtn.disabled = true;
-      if (submitLabel) submitLabel.textContent = 'Decrypting request…';
+      if (submitLabel) submitLabel.textContent = 'SUBMITTING...'; 
 
-      const result = await submitToEndpoint(data);
+      try {
+        const payload = {
+          fullName: document.getElementById('reg-name').value,
+          email: document.getElementById('reg-email').value,
+          phone: document.getElementById('reg-phone').value || "N/A",
+          location: document.getElementById('reg-location').value || "N/A",
+          identity: document.getElementById('reg-identity').value || "N/A",
+          source: document.getElementById('reg-source').value || "N/A",
+          volunteer: document.getElementById('reg-volunteer').value || "N/A",
+          notes: document.getElementById('reg-notes') ? document.getElementById('reg-notes').value : "N/A",
+          track: Array.from(document.querySelectorAll('#track-pills input[type="checkbox"]:checked')).map(cb => cb.value).join(', ') || "N/A"
+        };
 
-      if (result.ok) {
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhx5PmRQ3bJdKLyW0Bia-t5b0dNcy---geQJtGNrwOh6l8BylVdVotY9gAaQL8AzydLQ/exec";
+
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors', 
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
         showSuccess(formWrap, successWrap);
-      } else if (result.skipped) {
-        // No endpoint configured — open the visitor's email client instead.
-        window.location.href = buildMailto(data);
-        showSuccess(formWrap, successWrap);
-      } else {
+
+      } catch (err) {
+        console.error(err);
+        if (window.DecryptUI) DecryptUI.toast("Registration failed. Please check your connection.");
         submitBtn.disabled = false;
-        if (submitLabel) submitLabel.textContent = 'Request access';
-        if (window.DecryptUI) DecryptUI.toast("COULDN'T SEND — TRY THE EMAIL LINK BELOW");
+        if (submitLabel) submitLabel.textContent = originalBtnText;
       }
     });
   }

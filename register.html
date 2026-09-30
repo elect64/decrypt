@@ -302,7 +302,7 @@
                       <p class="payment-proof-intro">One small step to unlock the chamber.</p>
                     </div>
                   </div>
-                  <input class="payment-proof-input" type="file" id="reg-payment-proof" name="payment_proof" accept="image/*,.pdf" required>
+                      <input class="payment-proof-input" type="file" id="reg-payment-proof" name="payment_proof" accept="image/*,.pdf">
                   <span class="field-help payment-proof-help">Access fee: Free · Accepted formats: image or PDF · Maximum 10 MB</span>
                   <span class="field-error" role="alert"></span>
                 </div>
@@ -426,89 +426,12 @@
 <script src="js/app-download-banner.js"></script>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyHx0H6SbRvcvu7QWt5QJiLBVwl3kt2QSO0zxrBQJ0pPlbPdUNhiBRavtUylF0TiEI3aA/exec"; // Use your existing deployed script URL
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhx5PmRQ3bJdKLyW0Bia-t5b0dNcy---geQJtGNrwOh6l8BylVdVotY9gAaQL8AzydLQ/exec"; // Use your existing deployed script URL
 
   const myForm = document.getElementById('register-form');
   const submitBtn = document.getElementById('reg-submit-btn');
   const formWrap = document.getElementById('reg-form-wrap');
-  const successDiv = document.getElementById('reg-success');
-  const accessCodeDisplay = document.getElementById('reg-access-code');
-  const fileInput = document.getElementById('reg-payment-proof');
-
-  // Utility to convert file to Base64
-  function getBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-  }
-
-  myForm.addEventListener('submit', async function(e) {
-    e.preventDefault(); 
-
-    const originalBtnText = submitBtn.innerHTML;
-    submitBtn.innerHTML = "<span class='btn-label'>UPLOADING & VERIFYING...</span>";
-    submitBtn.disabled = true;
-
-    try {
-      let fileBase64 = null;
-      let mimeType = null;
-      let fileName = null;
-
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        
-        if (file.size > 5 * 1024 * 1024) { 
-            alert("File is too large. Please upload an image or PDF under 5MB.");
-            submitBtn.innerHTML = originalBtnText;
-            submitBtn.disabled = false;
-            return;
-        }
-
-        const base64FullString = await getBase64(file);
-        const splitData = base64FullString.split(',');
-        fileBase64 = splitData[1];
-        mimeType = splitData[0].match(/:(.*?);/)[1];
-        fileName = file.name;
-      }
-
-      const payload = {
-        fullName: document.getElementById('reg-name').value,
-        email: document.getElementById('reg-email').value,
-        phone: document.getElementById('reg-phone').value || "N/A",
-        location: document.getElementById('reg-location').value || "N/A",
-        identity: document.getElementById('reg-identity').value || "N/A",
-        source: document.getElementById('reg-source').value || "N/A",
-        volunteer: document.getElementById('reg-volunteer').value || "N/A",
-        notes: document.getElementById('reg-notes') ? document.getElementById('reg-notes').value : "N/A",
-        track: Array.from(document.querySelectorAll('#track-pills input[type="checkbox"]:checked')).map(function(cb){ return cb.value; }).join(', ') || "N/A",
-        fileName: fileName,
-        mimeType: mimeType,
-        fileBase64: fileBase64 
-      };
-
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors', 
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8' 
-        },
-        body: JSON.stringify(payload)
-      });
-
-      formWrap.style.display = 'none';
-      successDiv.style.display = 'block';
-      accessCodeDisplay.innerText = "CHECK EMAIL"; 
-
-    } catch (err) {
-      console.error(err);
-      alert("Registration failed. Please check your connection and try again.");
-      submitBtn.innerHTML = originalBtnText;
-      submitBtn.disabled = false;
-    }
-  });
+  
 </script>
 
 <!-- ========================================== -->
