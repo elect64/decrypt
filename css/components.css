@@ -90,6 +90,7 @@
 .hero-title .line { display: block; overflow: hidden; }
 .hero-title .line span { display: inline-block; will-change: transform; }
 .hero-sub { max-width: 620px; font-size: clamp(1rem, 1.4vw, 1.25rem); color: var(--c-text-secondary); font-weight: 400; text-transform: none; }
+.hero-register-mobile { display: none; }
 .hero-meta {
   margin-top: 46px; display: flex; flex-wrap: wrap; gap: 34px;
   font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--c-text-secondary); text-transform: uppercase;

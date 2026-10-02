@@ -20,6 +20,9 @@
 }
 
 /* ---------- ≤860 : mobile nav switch (see layout.css) ---------- */
+@media (max-width: 860px) {
+  .hero-register-mobile { display: inline-flex; margin-top: 22px; }
+}
 
 /* ---------- ≤768 ---------- */
 @media (max-width: 768px) {
