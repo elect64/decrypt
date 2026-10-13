@@ -1229,7 +1229,7 @@ var Progress = (function () {
         icon: 'cipher', unlocked: dailyWins() > 0 },
       { id: 'knowledge-seeker', name: 'KNOWLEDGE SEEKER', desc: 'Checked in at DECRYPT 2.0',
         icon: 'book', unlocked: checkedIn },
-      { id: 'early-access', name: 'EARLY ACCESS', desc: 'Registered before Oct 2026',
+      { id: 'early-access', name: 'EARLY ACCESS', desc: 'Registered before 17th Oct 2026',
         icon: 'bolt', unlocked: early },
       { id: 'decrypted', name: 'DECRYPTED', desc: 'Certificate issued',
         icon: 'cert', unlocked: !!(p && p.certStatus === 'Sent' && p.certUrl) }
