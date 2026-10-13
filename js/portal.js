@@ -40,14 +40,14 @@ var DECRYPT_FEATURES = {
 var DECRYPT_SESSIONS = [
   { id: 's1', title: 'Opening Session', speaker: 'DECRYPT Team',
     description: 'Welcome + keynote.',
-    link: '', startISO: '2026-10-30T19:00:00+01:00',
-    endISO: '2026-10-31T21:00:00+01:00' }
+    link: '', startISO: '2026-10-30T19:00:00',
+    endISO: '2026-10-31T21:00:00'}
   
 ];
 
 /* Early-access cutoff for the EARLY ACCESS achievement —
    uses the real registeredAt field from the participant. */
-var EARLY_ACCESS_CUTOFF = '2026-10-01T00:00:00';
+var EARLY_ACCESS_CUTOFF = '2026-10-17T00:00:00';
 
 /* ---------- STATE ---------- */
 var SESSION_KEY  = 'dcmd_portal_session';
