@@ -147,6 +147,8 @@ function initForm() {
           body: JSON.stringify(payload)
         });
 
+        const volunteerGroupLink = document.getElementById('volunteer-group-link');
+        if (volunteerGroupLink) volunteerGroupLink.hidden = payload.volunteer !== 'Yes';
         showSuccess(formWrap, successWrap);
 
       } catch (err) {
