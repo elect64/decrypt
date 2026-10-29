@@ -31,7 +31,11 @@ const SPEAKER_DATA = [
   { name: "Mr Donanu Richard",role: "Entrepreneurship",        note: "Business Coach",                  img: "assets/sp-richard.png" },
   { name: "Mr. Victor A.I.",  role: "Graphic Design",          note: "Graphic Designer, Media Expert",  img: "assets/sp-victor.png" },
   { name: "Mr. Madu Marvelous",role: "Forex",                  note: "Forex Trader",                    img: "assets/sp-marvelous.png" },
-  { name: "Mr. Elect Okezie", role: "Multi-faceted Creative",  note: "Founder, Decrypt",                img: "assets/sp-elect.png" }
+  { name: "Ms. Anjolaoluwa Anifowose", role: "Growth Strategist",  note: "Founder, The Growth Circle",                img: "assets/sp-anjolaoluwa.png" },
+  { name: "Mr. Femi Olowo", role: "Professional Creator",  note: "Founder, FOB Visuals",                img: "assets/sp-femi.png" },
+  { name: "Mr. Daniel Andikan", role: "Brand Designere",  note: "Founder, Primforte",                img: "assets/sp-daniel.png" },
+  { name: "Mr. Gideon Omonkhuale", role: "Builder",  note: "Founder, Dispatch Me & President NACOS Uniport",                img: "assets/sp-gideon.png" },
+
 ];
 
 const MOVEMENT_DATA = [
