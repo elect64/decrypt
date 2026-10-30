@@ -1466,8 +1466,8 @@ function renderEventInfo(d) {
 
   if (d.joiningLink) {
     html += '<div class="event-join-block">' +
-      '<div><div class="event-join-label">Join DECRYPT WhatsApp Community</div>' +
-      '<div class="event-join-text">Click to join for event info and updates</div></div>' +
+      '<div><div class="event-join-label">Join The Conference Room</div>' +
+      '<div class="event-join-text">Click to join for event stream</div></div>' +
       '<a class="event-join-btn" href="' + esc(d.joiningLink) + '" target="_blank" rel="noopener">Join now →</a>' +
       '</div>';
   }
