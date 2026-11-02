@@ -6,8 +6,8 @@
 
 const EDITION_DATA = [
   { id: "1.0", index: "01", name: "DECRYPT 1.0", theme: "The Code Behind Creativity", date: "October 2025", format: "7 Days · Virtual · Telegram", status: "unlocked", hasDetail: true },
-  { id: "2.0", index: "02", name: "DECRYPT 2.0", theme: "The next chapter is forming",  date: "October 2026", format: "1 Day · Physical ",      status: "current",  hasDetail: false },
-  { id: "3.0", index: "03", name: "DECRYPT 3.0", theme: "Undisclosed",                  date: "2027",         format: "Locked",                       status: "locked",   hasDetail: false },
+  { id: "2.0", index: "02", name: "DECRYPT 2.0", theme: "Creativity With Intention",  date: "October 2026", format: "2 Days · Virtual · Telegram",      status: "unlocked",  hasDetail: true },
+  { id: "3.0", index: "03", name: "DECRYPT 3.0", theme: "Undisclosed",                  date: "2027",         format: "Locked",                       status: "Join waitlist",   hasDetail: false },
   { id: "4.0", index: "04", name: "DECRYPT 4.0", theme: "Undisclosed",                  date: "2028",         format: "Locked",                       status: "locked",   hasDetail: false }
 ];
 

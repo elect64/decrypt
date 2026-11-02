@@ -13,11 +13,11 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register — DECRYPT 2.0</title>
-<meta name="description" content="Register for DECRYPT 2.0, October 2026. Virtual and open to any young technology enthusiast, creative, learner or builder. Knowledge should not stay locked.">
+<title>Waitlist — DECRYPT 3.0</title>
+<meta name="description" content="Join the waitlist for DECRYPT 3.0. Request your access and be the first to know when registration opens.">
 
-<meta property="og:title" content="Register — DECRYPT 2.0">
-<meta property="og:description" content="Request your access for DECRYPT 2.0 — October 2026.">
+<meta property="og:title" content="Waitlist — DECRYPT 3.0">
+<meta property="og:description" content="Request your access for DECRYPT 3.0.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="assets/images/og-image.jpg">
 
@@ -112,7 +112,7 @@
   }
 </style>
 </head>
-<body>
+<body class="waitlist-page">
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -137,13 +137,9 @@
     </a>
 
     <nav class="nav-desktop" aria-label="Primary">
-      <a class="nav-link" href="index.html#movement">Movement</a>
-      <a class="nav-link" href="index.html#archive">Archive</a>
-      <a class="nav-link" href="index.html#community">Community</a>
-      <a class="nav-link" href="index.html#people">People</a>
-      <a class="nav-link" href="index.html#knowledge">Knowledge</a>
-      <a class="nav-link nav-cta nav-portal" href="decpp.html?v=1.1" target="_blank" rel="noreferrer" data-cursor>Log In to Participants Portal</a>
-      <a class="nav-link nav-cta" href="register.html?v=1.1" aria-current="page" data-cursor>Register</a>
+      <a class="nav-link" href="index.html">About DECRYPT</a>
+      <a class="nav-link nav-cta nav-portal" href="decpp.html?v=1.1" target="_blank" rel="noreferrer" data-cursor>Participants Portal</a>
+      <a class="nav-link nav-cta" href="#register" aria-current="page" data-cursor>Join the waitlist</a>
     </nav>
 
     <div class="header-controls">
@@ -164,60 +160,97 @@
       <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="1.6" fill="none"><path d="M5 5l14 14M19 5L5 19"/></svg>
     </button>
     <a href="index.html?v=1.1">Home</a>
-    <a href="index.html#movement">Movement</a>
-    <a href="index.html#archive">Archive</a>
-    <a href="index.html#community">Community</a>
-    <a href="index.html#people">People</a>
-    <a href="index.html#knowledge">Knowledge</a>
+    <a href="index.html">About DECRYPT</a>
     <a href="decpp.html?v=1.1" target="_blank" rel="noreferrer">Log In to Participants Portal</a>
-    <a href="register.html?v=1.1">Register</a>
+    <a href="#register">Join the waitlist</a>
   </div>
 
   <main id="main">
 
-    <!-- 01 — REGISTRATION HERO -->
-    <section id="hero" class="section" style="min-height:100svh; padding-top: calc(var(--nav-h) + 20px); display:flex; flex-direction:column; justify-content:center;">
-      <div class="section-inner hero-grid">
-        <div>
-          <p class="hero-kicker">DECRYPT 2.0 — Access request</p>
-          <h1 class="hero-title">
-            <span class="line"><span>REGISTER</span></span>
-          </h1>
-          <p class="hero-sub">DECRYPT 2.0 is forming, a virtual conference for young technology enthusiasts, creatives, learners and builders with this years theme: Creativity With Intention. <br> Request your access below and we'll send the details as October 2026 approaches.</p>
-          <div class="reg-quickfacts">
-            <div><strong>Chapter</strong>DECRYPT 2.0</div>
-            <div><strong>Format</strong>Virtual · Telegram</div>
-            <div><strong>Opens</strong>October 2026</div>
-            <div><strong>Access fee</strong>Free</div>
+    <section id="hero" class="waitlist-hero">
+      <div class="waitlist-layout">
+        <div class="waitlist-copy">
+          <p class="waitlist-eyebrow"><span class="waitlist-live-dot" aria-hidden="true"></span> DECRYPT 3.0 <span> / </span> EARLY ACCESS</p>
+          <h1 class="waitlist-title">THE<br><em>NEXT</em><br>CHAPTER.</h1>
+          <p class="waitlist-description">DECRYPT is growing into its next chapter. Get on the list for first access when DECRYPT 3.0 opens.</p>
+          <div class="waitlist-edition" aria-label="Event details">
+            <span>01</span><span>THE SIGNAL OPENS SOON</span><span>VIRTUAL · GLOBAL</span>
           </div>
         </div>
-        <div class="scene-wrap" id="scene-wrap" data-cursor role="button" tabindex="0" aria-label="Tap to switch the vault animation">
-          <canvas id="scene-canvas" class="scene-canvas" aria-hidden="true"></canvas>
-          <div id="scene-fallback" class="scene-fallback" aria-hidden="true">
-            <div class="fallback-inner">
-              <div class="fallback-frame"></div>
-              <div class="fallback-tile ft-1"></div>
-              <div class="fallback-tile ft-2"></div>
-              <div class="fallback-tile ft-3"></div>
-              <div class="fallback-lock"></div>
+
+        <section class="waitlist-panel" id="register" aria-labelledby="step-heading">
+          <div class="waitlist-panel-top">
+            <span>ACCESS REQUEST</span>
+            <span id="step-count">01 / 03</span>
+          </div>
+          <div class="waitlist-progress" role="progressbar" aria-label="Waitlist form progress" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1">
+            <span class="waitlist-progress-fill"></span>
+          </div>
+          <div class="waitlist-step-heading">
+            <p class="waitlist-step-kicker" id="step-kicker">STEP 01</p>
+            <h2 id="step-heading" tabindex="-1">What should we call you?</h2>
+            <p id="step-description">Start with your name.</p>
+          </div>
+
+          <form id="register-form" class="waitlist-form" novalidate>
+            <div class="waitlist-step" data-step="0">
+              <div class="waitlist-field">
+                <label for="reg-name">Your name</label>
+                <input type="text" id="reg-name" name="name" autocomplete="name" placeholder="Full name" required>
+                <span class="field-error" role="alert"></span>
+              </div>
             </div>
-          </div>
-          <p class="scene-hint" id="scene-hint" aria-hidden="true">Tap to unlock another view</p>
-          <div class="scene-indicator" id="scene-indicator" aria-hidden="true">
-            <span class="dot active" data-i="0"></span>
-            <span class="dot" data-i="1"></span>
-            <span class="dot" data-i="2"></span>
-            <span class="dot" data-i="3"></span>
-          </div>
-          <p class="sr-only" id="scene-announce" aria-live="polite"></p>
-        </div>
+            <div class="waitlist-step" data-step="1" hidden>
+              <div class="waitlist-field">
+                <label for="reg-email">Email address</label>
+                <input type="email" id="reg-email" name="email" autocomplete="email" placeholder="you@example.com" required>
+                <span class="field-error" role="alert"></span>
+              </div>
+            </div>
+            <div class="waitlist-step" data-step="2" hidden>
+              <div class="waitlist-field">
+                <label for="reg-phone">Phone number</label>
+                <input type="tel" id="reg-phone" name="phone" autocomplete="tel" placeholder="+234 800 000 0000" required>
+                <span class="field-error" role="alert"></span>
+              </div>
+            </div>
+
+            <div class="waitlist-form-actions">
+              <button class="waitlist-back" type="button" id="step-back" hidden aria-label="Go to previous step">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              </button>
+              <button class="waitlist-continue" type="button" id="step-next">
+                <span>Continue</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <button class="waitlist-continue" type="submit" id="reg-submit-btn" hidden>
+                <span class="btn-label">Join the waitlist</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+            <p class="waitlist-error" id="waitlist-error" role="status" aria-live="polite"></p>
+          </form>
+          <p class="waitlist-privacy">Just three details. We’ll only use them for DECRYPT 3.0 updates.</p>
+        </section>
       </div>
-      <div class="scroll-cue"><span class="bar"></span> Scroll to register</div>
+      <div class="waitlist-index" aria-hidden="true"><span>INTO THE NEXT</span><span>03 — 2026</span></div>
     </section>
+
+    <dialog class="waitlist-success" id="waitlist-success" aria-labelledby="success-title">
+      <button class="waitlist-success-close" type="button" aria-label="Close confirmation">×</button>
+      <p class="waitlist-success-kicker">REQUEST RECEIVED · DECRYPT 3.0</p>
+      <h2 id="success-title">YOU’RE<br><em>ON THE LIST.</em></h2>
+      <p class="waitlist-success-message">Thanks, <span id="success-name">friend</span>. We’ll be in touch when the next chapter opens.</p>
+      <div class="mascot-stage">
+        <canvas id="waitlist-mascot" role="img" aria-label="A 3D DECRYPT mascot wakes up, gives a thumbs-up, then falls asleep"></canvas>
+        <p class="mascot-fallback" id="mascot-fallback" hidden>Thanks for joining the DECRYPT 3.0 waitlist.</p>
+      </div>
+      <button class="waitlist-done" type="button" id="success-done">Back to the waitlist</button>
+    </dialog>
 
 
     <!-- 03 — REGISTRATION FORM -->
-    <section id="register" class="section">
+    <section id="legacy-register" class="section">
       <div class="section-inner">
         <p class="eyebrow">The form</p>
         <h2 data-reveal>Tell us who's unlocking with us.</h2>
@@ -225,24 +258,24 @@
 
         <div class="reg-form-chamber" data-reveal style="margin-top:44px;">
           <div id="reg-form-wrap">
-            <form id="register-form" novalidate>
+            <form id="legacy-register-form" novalidate>
               <div class="reg-form">
 
                 <div class="field">
                   <label for="reg-name">Full name<span class="req">*</span></label>
-                  <input type="text" id="reg-name" name="name" autocomplete="name" placeholder="Your full name">
+                  <input type="text" id="legacy-reg-name" name="name" autocomplete="name" placeholder="Your full name">
                   <span class="field-error" role="alert"></span>
                 </div>
 
                 <div class="field">
                   <label for="reg-email">Email<span class="req">*</span></label>
-                  <input type="email" id="reg-email" name="email" autocomplete="email" placeholder="you@example.com">
+                  <input type="email" id="legacy-reg-email" name="email" autocomplete="email" placeholder="you@example.com">
                   <span class="field-error" role="alert"></span>
                 </div>
 
                 <div class="field">
                   <label for="reg-phone">Phone / WhatsApp<span class="req">*</span></label>
-                  <input type="tel" id="reg-phone" name="phone" autocomplete="tel" placeholder="Optional">
+                  <input type="tel" id="legacy-reg-phone" name="phone" autocomplete="tel" placeholder="Optional">
                 </div>
 
                 <div class="field">
@@ -270,7 +303,7 @@
                     <option value="WhatsApp">WhatsApp</option>
                     <option value="A friend">A friend</option>
                     <option value="LinkedIn">LinkedIn</option>
-                    <option value="DECRYPT 1.0">I attended DECRYPT 1.0</option>
+                    <option value="Previous editions">I attended previous editions of DECRYPT</option>
                     <option value="Other">Other</option>
                   </select>
                 </div>
@@ -310,14 +343,14 @@
                 <div class="field field--full">
                   <div class="consent-row">
                     <input type="checkbox" id="reg-consent" name="consent">
-                    <label for="reg-consent">I agree to be contacted by email or WhatsApp about DECRYPT 2.0.<span class="req">*</span></label>
+                    <label for="reg-consent">I agree to be contacted by email or WhatsApp about DECRYPT 3.0.<span class="req">*</span></label>
                   </div>
                   <span class="field-error" role="alert"></span>
                 </div>
 
                 <div class="field field--full reg-submit-row">
-                  <button class="btn btn--solid" type="submit" id="reg-submit-btn" data-cursor>
-                    <span class="btn-label">Request access</span> <span class="btn-arrow">→</span>
+                  <button class="btn btn--solid" type="submit" id="legacy-reg-submit-btn" data-cursor>
+                  <span class="btn-label">Join the Waitlist</span>                  
                   </button>
                   <span class="reg-submit-note">Powered By Decrypt HQ</span>
                 </div>
@@ -326,7 +359,7 @@
             </form>
           </div>
 
-          <div class="reg-success" id="reg-success">
+          <!-- <div class="reg-success" id="reg-success">
             <div class="status-glyph" aria-hidden="true"></div>
             <h3>Access requested.</h3>
             <p>Check your inbox for a confirmation — the full schedule and access links unlock as October 2026 gets closer.</p>
@@ -339,6 +372,15 @@
               <a class="btn btn--outline" href="index.html?v=1.1" data-cursor>Back to DECRYPT.</a>
               <a class="btn btn--solid" id="volunteer-group-link" href="https://chat.whatsapp.com/LPzVlXnTBMDDRx8bTcFmE0?s=cl&amp;p=a&amp;mlu=4&amp;ilr=4" target="_blank" rel="noopener noreferrer" data-cursor hidden>You said yes to volunteering, join the volunteers group</a>
 
+            </div> -->
+
+            <div class="reg-success" id="reg-success">
+              <div class="status-glyph" aria-hidden="true"></div>
+              <h3>You're on the list.</h3>
+              <p>Check your inbox for a confirmation. We will notify you the moment DECRYPT 3.0 registration officially opens.</p>
+              <div style="margin-top: 30px;">
+                <a class="btn btn--outline" href="index.html?v=1.1" data-cursor>Back to DECRYPT.</a>
+              </div>
             </div>
           </div>
         </div>
@@ -386,7 +428,7 @@
     <section id="connect" class="section">
       <div class="section-inner">
         <p class="eyebrow">There's always more to unlock</p>
-        <h2 data-reveal class="display" style="font-size:var(--step-h1); max-width:900px;">Already registered? Follow along while you wait.</h2>
+        <h2 data-reveal class="display" style="font-size:var(--step-h1); max-width:900px;">Already joined the waitlist? Follow along while you wait.</h2>
         <div data-reveal style="display:flex; flex-wrap:wrap; gap:16px; margin-top:44px;">
           <a class="btn btn--solid" href="#" id="follow-decrypt" data-cursor>Follow DECRYPT <span class="btn-arrow">→</span></a>
           <a class="btn btn--outline" href="index.html#archive" data-cursor>Browse the archive</a>
@@ -421,6 +463,8 @@
 <script src="js/sound.js"></script>
 <script src="js/countdown.js"></script>
 <script src="js/animations.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="js/waitlist-mascot.js"></script>
 <script src="js/interactions.js"></script>
 <script src="js/register.js"></script>
 <script src="js/register-main.js"></script>

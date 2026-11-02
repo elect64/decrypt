@@ -53,7 +53,7 @@ const DecryptRegister = (() => {
 
   /* ---------- Validation & Submission ---------- */
   function setError(field, message) {
-    const wrap = field.closest('.field');
+    const wrap = field.closest('.waitlist-field');
     if (!wrap) return;
     const errEl = wrap.querySelector('.field-error');
     if (errEl) errEl.textContent = message || '';
@@ -61,103 +61,127 @@ const DecryptRegister = (() => {
     field.setAttribute('aria-invalid', message ? 'true' : 'false');
   }
 
-  function validateForm(form) {
-    let firstInvalid = null;
-    const name = form.querySelector('#reg-name');
-    const email = form.querySelector('#reg-email');
-    const consent = form.querySelector('#reg-consent');
-
-    if (!name.value.trim()) { setError(name, 'Tell us your name.'); firstInvalid = firstInvalid || name; }
-    else setError(name, '');
-
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
-    if (!emailOk) { setError(email, 'Enter a valid email.'); firstInvalid = firstInvalid || email; }
-    else setError(email, '');
-
-    if (!consent.checked) { setError(consent, 'Required to proceed.'); firstInvalid = firstInvalid || consent; }
-    else setError(consent, '');
-
-    return firstInvalid;
-  }
-
-  function getBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-  }
-
-  function showSuccess(formWrap, successWrap) {
-    formWrap.style.display = 'none';
-    successWrap.classList.add('active');
-    
-    // Shows CHECK EMAIL directly, skips random hash UI bug
-    const codeEl = document.getElementById('reg-access-code');
-    if (codeEl) codeEl.textContent = 'CHECK EMAIL'; 
-
-    if (window.DecryptSound) DecryptSound.thunk();
-    successWrap.setAttribute('tabindex', '-1');
-    successWrap.focus({ preventScroll: true });
-    successWrap.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
-  }
-
-function initForm() {
+  function initForm() {
     const form = document.getElementById('register-form');
     if (!form) return;
-    const formWrap = document.getElementById('reg-form-wrap');
-    const successWrap = document.getElementById('reg-success');
-    const submitBtn = document.getElementById('reg-submit-btn');
-    const submitLabel = submitBtn ? submitBtn.querySelector('.btn-label') : null;
+    const steps = [...form.querySelectorAll('.waitlist-step')];
+    const inputs = steps.map(step => step.querySelector('input'));
+    const backButton = document.getElementById('step-back');
+    const nextButton = document.getElementById('step-next');
+    const submitButton = document.getElementById('reg-submit-btn');
+    const submitLabel = submitButton.querySelector('.btn-label');
+    const stepCount = document.getElementById('step-count');
+    const stepKicker = document.getElementById('step-kicker');
+    const stepHeading = document.getElementById('step-heading');
+    const stepDescription = document.getElementById('step-description');
+    const progress = document.querySelector('.waitlist-progress');
+    const progressFill = document.querySelector('.waitlist-progress-fill');
+    const formError = document.getElementById('waitlist-error');
+    const successDialog = document.getElementById('waitlist-success');
+    const successName = document.getElementById('success-name');
+    const closeButtons = [...successDialog.querySelectorAll('.waitlist-success-close, #success-done')];
+    const content = [
+      { title: 'What should we call you?', description: 'Start with your name.' },
+      { title: 'Where can we reach you?', description: 'Your inbox is where the first signal lands.' },
+      { title: 'One last detail.', description: 'Add a phone number for important updates.' }
+    ];
+    let activeStep = 0;
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const firstInvalid = validateForm(form);
-      if (firstInvalid) {
-        firstInvalid.focus();
-        if (window.DecryptSound) DecryptSound.click();
+    function validateStep(index) {
+      const input = inputs[index];
+      const value = input.value.trim();
+      let message = '';
+      if (!value) {
+        message = ['Enter your name.', 'Enter your email address.', 'Enter your phone number.'][index];
+      } else if (index === 1 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        message = 'Enter a valid email address.';
+      } else if (index === 2 && value.replace(/\D/g, '').length < 7) {
+        message = 'Enter a valid phone number.';
+      }
+      setError(input, message);
+      return !message;
+    }
+
+    function showStep(index) {
+      activeStep = index;
+      steps.forEach((step, stepIndex) => { step.hidden = stepIndex !== index; });
+      stepCount.textContent = `0${index + 1} / 0${steps.length}`;
+      stepKicker.textContent = `STEP 0${index + 1}`;
+      stepHeading.textContent = content[index].title;
+      stepDescription.textContent = content[index].description;
+      backButton.hidden = index === 0;
+      nextButton.hidden = index === steps.length - 1;
+      submitButton.hidden = index !== steps.length - 1;
+      progress.setAttribute('aria-valuenow', String(index + 1));
+      progressFill.style.width = `${((index + 1) / steps.length) * 100}%`;
+      formError.textContent = '';
+    }
+
+    nextButton.addEventListener('click', () => {
+      if (!validateStep(activeStep)) { inputs[activeStep].focus(); return; }
+      showStep(activeStep + 1);
+      inputs[activeStep].focus();
+    });
+
+    backButton.addEventListener('click', () => {
+      showStep(activeStep - 1);
+      inputs[activeStep].focus();
+    });
+
+    inputs.forEach((input, index) => input.addEventListener('input', () => {
+      if (input.closest('.waitlist-field').classList.contains('has-error')) validateStep(index);
+    }));
+
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (activeStep < steps.length - 1) {
+        if (!validateStep(activeStep)) { inputs[activeStep].focus(); return; }
+        showStep(activeStep + 1);
+        inputs[activeStep].focus();
         return;
       }
+      if (!validateStep(activeStep)) { inputs[activeStep].focus(); return; }
 
-      const originalBtnText = submitLabel ? submitLabel.textContent : "Request access";
-      submitBtn.disabled = true;
-      if (submitLabel) submitLabel.textContent = 'SUBMITTING...'; 
+      const originalLabel = submitLabel.textContent;
+      submitButton.disabled = true;
+      submitLabel.textContent = 'ADDING YOU...';
+      formError.textContent = '';
+      const payload = {
+        fullName: inputs[0].value.trim(),
+        email: inputs[1].value.trim(),
+        phone: inputs[2].value.trim()
+      };
 
       try {
-        const payload = {
-          fullName: document.getElementById('reg-name').value,
-          email: document.getElementById('reg-email').value,
-          phone: document.getElementById('reg-phone').value || "N/A",
-          location: document.getElementById('reg-location').value || "N/A",
-          identity: document.getElementById('reg-identity').value || "N/A",
-          source: document.getElementById('reg-source').value || "N/A",
-          volunteer: document.getElementById('reg-volunteer').value || "N/A",
-          notes: document.getElementById('reg-notes') ? document.getElementById('reg-notes').value : "N/A",
-          track: Array.from(document.querySelectorAll('#track-pills input[type="checkbox"]:checked')).map(cb => cb.value).join(', ') || "N/A"
-        };
-
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhx5PmRQ3bJdKLyW0Bia-t5b0dNcy---geQJtGNrwOh6l8BylVdVotY9gAaQL8AzydLQ/exec";
-
-        await fetch(SCRIPT_URL, {
+        await fetch('https://script.google.com/macros/s/AKfycbxhx5PmRQ3bJdKLyW0Bia-t5b0dNcy---geQJtGNrwOh6l8BylVdVotY9gAaQL8AzydLQ/exec', {
           method: 'POST',
-          mode: 'no-cors', 
+          mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
-
-        const volunteerGroupLink = document.getElementById('volunteer-group-link');
-        if (volunteerGroupLink) volunteerGroupLink.hidden = payload.volunteer !== 'Yes';
-        showSuccess(formWrap, successWrap);
-
-      } catch (err) {
-        console.error(err);
-        if (window.DecryptUI) DecryptUI.toast("Registration failed. Please check your connection.");
-        submitBtn.disabled = false;
-        if (submitLabel) submitLabel.textContent = originalBtnText;
+        submitLabel.textContent = 'YOU’RE ON THE LIST';
+        successName.textContent = payload.fullName.split(/\s+/)[0];
+        successDialog.showModal();
+        successDialog.querySelector('.waitlist-success-close').focus();
+        if (window.WaitlistMascot) window.WaitlistMascot.play();
+        if (window.DecryptSound) DecryptSound.reveal();
+      } catch (error) {
+        console.error(error);
+        formError.textContent = 'We couldn’t connect. Check your connection and try again.';
+        submitButton.disabled = false;
+        submitLabel.textContent = originalLabel;
       }
     });
+
+    closeButtons.forEach(button => button.addEventListener('click', () => successDialog.close()));
+    successDialog.addEventListener('click', event => {
+      if (event.target === successDialog) successDialog.close();
+    });
+    successDialog.addEventListener('close', () => {
+      if (window.WaitlistMascot) window.WaitlistMascot.pause();
+      stepHeading.focus();
+    });
+    showStep(0);
   }
 
   function init() {
