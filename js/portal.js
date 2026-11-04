@@ -22,12 +22,22 @@ const DECRYPT_SESSIONS = [
 /* SPEAKERS — fill in as confirmed. Shown on the Speakers page.
    { name, role, topic, session, bio, photo (image URL), link }  */
 const DECRYPT_SPEAKERS = [
-  // { name: 'Ada Obi', role: 'Product Designer, Acme', topic: 'Design', session: 'Opening Session', bio: '', photo: '', link: '' }
+   { name: 'Miss Anjolaoluwa Anifowose', role: 'Founder, The Growth Circle', topic: 'Creativity With Character', session: 'Opening Session', bio: '', photo: 'assets/sp-anjolaoluwa.png', link: '' },
+   {name: 'Mr Femi Olowo', role: 'Founder, FOB Visuals', topic: 'Professional Creator', session: 'The Creators Responsibility', bio: '', photo: 'assets/sp-femi.png', link: '' },
+  {name: 'Mr Daniel Andikan', role: 'Founder, Primforte', topic: 'Brand Designer', session: 'From Good Enough to Remarkable', bio: '', photo: 'assets/sp-daniel.png', link: '' },
+  {name: 'Mr Gideon Omonkhuale', role: 'Founder, Dispatch Me & President NACOS Uniport', topic: 'Builder', session: 'The Craft Behind the Content', bio: '', photo: 'assets/sp-gideon.png', link: '' },
+  {name: 'Mr Elect Okezie', role: 'Video Editor', topic: 'Video Editing', session: 'Resourceful Not Resource Limited', bio: '', photo: 'assets/sp-elect.png', link: '' },
 ];
 
-/* RESOURCES — slides, recordings, tools, reading.
-   { title, category ('Slides'|'Recording'|'Tool'|'Reading'…), description, url } */
+/* Fill in title and url to publish; Audio and Video categories get built-in players. */
 const DECRYPT_RESOURCES = [
+  { title: 'Decrypt 2.0 Day 1 - Miss Anjiee', category: 'Audio', description: 'Miss Anjolaoluwa Anifowose', url: 'assets/Day 1 - Miss Anjie.m4a' },
+  { title: 'Decrypt 2.0 Day 1 - Stream 1', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 1 - Stream1.ogg' },
+    { title: 'Decrypt 2.0 Day 1 - Stream 2', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 1 - Stream2.ogg' },
+  { title: 'Decrypt 2.0 Day 1', category: 'Video', description: 'Full Stream', url: 'assets/Decryptv2_Ms. Anjolaoluwa.mp4' },
+  { title: 'Decrypt 2.0 Day 2 - Mr Elect', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 2 - Mr Elect.mp3' },
+  { title: 'Decrypt 2.0 Day 2 - Full Stream', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 2 - Full Stream.ogg' },
+  { title: 'Decrypt 2.0 Day 2', category: 'Video', description: 'Full Stream', url: 'assets/Day 2.mp4' }
   // { title: 'Opening session slides', category: 'Slides', description: 'PDF', url: 'https://…' }
 ];
 
@@ -164,13 +174,16 @@ const Theme = (function () {
     $('#meta-theme-color').setAttribute('content', t === 'dark' ? '#0B0C0B' : '#F1F2EE');
     if (persist !== false) ls.set(K.theme, p);
   }
+  function toggle() {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+    if (P) Pages.settings();
+  }
   function init() {
     apply(pref(), false);
     mq.addEventListener('change', () => { if (pref() === 'system') apply('system', false); });
-    $('#theme-toggle').addEventListener('click', () => {
-      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      apply(next); if (P) Pages.settings();
-    });
+    $('#theme-toggle').addEventListener('click', toggle);
+    $('#gate-theme-toggle').addEventListener('click', toggle);
   }
   return { init, apply, pref };
 })();
@@ -846,14 +859,25 @@ const Pages = (function () {
   /* ----- Resources ----- */
   let _resFilter = 'All';
   function resources() {
-    const cats = ['All'].concat(Array.from(new Set(DECRYPT_RESOURCES.map(r => r.category).filter(Boolean))));
-    const items = DECRYPT_RESOURCES.filter(r => _resFilter === 'All' || r.category === _resFilter);
+    const available = DECRYPT_RESOURCES.filter(r => r.title && r.title.trim() && r.url && r.url.trim());
+    const cats = ['All'].concat(Array.from(new Set(available.map(r => r.category).filter(Boolean))));
+    const items = available.filter(r => _resFilter === 'All' || r.category === _resFilter);
     let body;
-    if (!DECRYPT_RESOURCES.length) {
+    if (!available.length) {
       body = '<section class="panel"><div class="empty"><span class="li-ico">' + ico('library') + '</span><b>Nothing here yet</b><p>Slides, recordings and tools from the sessions will be posted here for participants.</p></div></section>';
     } else {
       body = (cats.length > 2 ? '<div class="filters">' + cats.map(c => '<button class="chip' + (c === _resFilter ? ' on' : '') + '" data-rf="' + esc(c) + '">' + esc(c) + '</button>').join('') + '</div>' : '') +
-        '<section class="panel">' + items.map(r => '<a class="res" href="' + esc(r.url) + '" target="_blank" rel="noopener"><span class="li-ico">' + ico(r.category === 'Reading' ? 'book' : r.category === 'Tool' ? 'link' : 'file') + '</span><div><b>' + esc(r.title) + '</b><small>' + esc(r.description || '') + '</small></div><span class="type">' + esc(r.category || '') + '</span></a>').join('') + '</section>';
+        '<section class="panel">' + items.map(r => {
+          const category = (r.category || '').toLowerCase();
+          if (category === 'audio' || category === 'video') {
+            const player = category === 'audio'
+              ? '<audio controls preload="none" src="' + esc(r.url) + '">Your browser does not support audio playback.</audio>'
+              : '<video controls preload="metadata" playsinline><source src="' + esc(r.url) + '">Your browser does not support video playback.</video>';
+            return '<div class="res res-media"><span class="li-ico">' + ico(category === 'audio' ? 'play' : 'file') + '</span><div><b>' + esc(r.title) + '</b>' +
+              (r.description ? '<small>' + esc(r.description) + '</small>' : '') + player + '</div><span class="type">' + esc(r.category) + '</span></div>';
+          }
+          return '<a class="res" href="' + esc(r.url) + '" target="_blank" rel="noopener"><span class="li-ico">' + ico(r.category === 'Reading' ? 'book' : r.category === 'Tool' ? 'link' : 'file') + '</span><div><b>' + esc(r.title) + '</b><small>' + esc(r.description || '') + '</small></div><span class="type">' + esc(r.category || '') + '</span></a>';
+        }).join('') + '</section>';
     }
     set('resources', head('Resources Hub', 'Slides, recordings and tools from DECRYPT 2.0.') + body);
     $$('[data-rf]').forEach(b => b.addEventListener('click', () => { _resFilter = b.dataset.rf; resources(); }));
