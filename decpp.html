@@ -1,357 +1,191 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>DECRYPT 2.0 — Participant Portal</title>
-<meta name="description" content="Your personal DECRYPT 2.0 portal. Access your details, event information and certificate.">
-<meta name="theme-color" content="#F4F6EF" id="meta-theme-color">
+<meta name="description" content="Your DECRYPT 2.0 portal: access pass, event details, speakers, resources and support.">
+<meta name="theme-color" content="#000000" id="meta-theme-color">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/portal.css">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2307220C'/%3E%3Ctext x='50' y='68' font-family='system-ui' font-size='50' font-weight='700' fill='%239CF0B0' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2307220C'/%3E%3Ctext x='50' y='70' font-family='system-ui' font-size='56' font-weight='800' fill='%23ffffff' text-anchor='middle'%3ED.%3C/text%3E%3C/svg%3E">
 <base target="_blank">
 </head>
 <body>
 
 <!-- ============================================================
-     AMBIENT BACKGROUND — aurora blobs + grid + noise
+     SIGN IN
      ============================================================ -->
-<div class="bg" aria-hidden="true">
-  <div class="bg-aurora a1"></div>
-  <div class="bg-aurora a2"></div>
-  <div class="bg-aurora a3"></div>
-  <div class="bg-grid"></div>
-  <div class="bg-noise"></div>
-</div>
+<main class="gate" id="auth-veil">
+  <section class="gate-brand">
+    <img class="gate-logo" src="assets/decrypt_banner3.png" alt="DECRYPT logo">
+  </section>
 
-<!-- ============================================================
-     GLOBAL THEME TOGGLE
-     ============================================================ -->
-<button class="theme-toggle" id="theme-toggle" aria-label="Switch colour theme" title="Switch theme">
-  <span class="theme-toggle-track">
-    <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"/></svg>
-    <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 14.2A8.5 8.5 0 0 1 9.8 3.6a8.5 8.5 0 1 0 10.6 10.6z"/></svg>
-    <span class="theme-toggle-thumb"></span>
-  </span>
-</button>
+  <section class="gate-form-wrap">
+    <div class="gate-form">
+      <div class="gate-mini"><img class="gate-mini-logo" src="assets/decrypt_banner3.png" alt="DECRYPT logo"></div>
+      <h1>Sign in to your portal</h1>
+      <p class="gate-desc">Use the email you registered with and the access code from your confirmation email.</p>
 
-<button class="fx-toggle" id="fx-toggle" aria-label="Toggle decrypt effects" title="Decrypt effects on/off" aria-pressed="true">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
-  <span>FX</span>
-</button>
-
-<!-- ============================================================
-     CAMPAIGN ALERT BANNER
-     ============================================================ -->
-<div class="campaign-alert" id="campaign-alert" role="alert" aria-live="polite">
-  <div class="campaign-alert-inner">
-    <span class="campaign-alert-dot"></span>
-    <svg class="campaign-alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
-    <span class="campaign-alert-msg" id="campaign-alert-msg">New message from DECRYPT — check your inbox.</span>
-    <button class="campaign-alert-close" id="campaign-alert-close" aria-label="Dismiss">✕</button>
-  </div>
-</div>
-
-<!-- ============================================================
-     AUTH GATE — split screen with live decrypt animation
-     ============================================================ -->
-<div class="auth-veil" id="auth-veil">
-  <div class="auth-stage">
-
-    <!-- Left: brand visual -->
-    <aside class="auth-visual">
-      <canvas class="auth-fx-canvas" id="auth-fx-canvas" aria-hidden="true"></canvas>
-      <div class="auth-visual-glow"></div>
-      <div class="auth-visual-content">
-        <div class="auth-brand">
-          <span class="auth-brand-dot"></span>
-          <span class="auth-brand-name">DECRYPT</span>
-          <span class="auth-brand-tag">2.0</span>
+      <form id="auth-form" novalidate>
+        <div class="field">
+          <label for="auth-email">Email address</label>
+          <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" inputmode="email">
         </div>
-        <h2 class="auth-visual-title"><span id="auth-scramble">CREATIVITY, WITH INTENTION.</span></h2>
-        <p class="auth-visual-sub">One portal for your registration, check-in QR, live event updates and certificate.</p>
-        <ul class="auth-visual-list">
-          <li><span class="tick">✓</span> Instant QR check-in</li>
-          <li><span class="tick">✓</span> Live announcements</li>
-          <li><span class="tick">✓</span> Certificate delivery</li>
-        </ul>
-      </div>
-      <p class="auth-visual-footer">OCT 2026 · PARTICIPANT PORTAL v2</p>
-    </aside>
-
-    <!-- Right: auth card -->
-    <div class="auth-card">
-      <div class="auth-header">
-        <div class="auth-header-row">
-          <div class="auth-brand compact">
-            <span class="auth-brand-dot"></span>
-            <span class="auth-brand-name">DECRYPT</span>
-          </div>
-          <span class="auth-live-pill"><span class="auth-live-dot"></span>SECURE</span>
+        <div class="field">
+          <label for="auth-code">Access code</label>
+          <input type="text" id="auth-code" class="code-input" placeholder="DEC2.O-XXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false">
+          <p class="field-hint" id="auth-code-hint">Looks like DEC2.O-AB12C</p>
         </div>
-        <p class="auth-brand-sub">Participant Portal</p>
-      </div>
+        <p class="form-error" id="auth-error" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block" id="auth-btn"><span id="auth-btn-label">Sign in</span></button>
+      </form>
 
-      <div class="auth-body">
-        <h1 class="auth-title">Unlock your access.</h1>
-        <p class="auth-desc">Enter your registered email and access code to enter DECRYPT.</p>
-
-        <div class="auth-form" id="auth-form">
-          <div class="auth-field">
-            <label for="auth-email">Email address</label>
-            <div class="auth-input-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg>
-              <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" inputmode="email">
-            </div>
-          </div>
-          <div class="auth-field">
-            <label for="auth-code">Access code</label>
-            <div class="auth-input-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-              <input type="text" id="auth-code" class="mono" placeholder="DEC2.O-XXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false">
-            </div>
-          </div>
-          <p class="auth-error" id="auth-error" role="alert"></p>
-          <button class="auth-btn btn-ripple" id="auth-btn">
-            <span id="auth-btn-label">Unlock access</span>
-            <span class="auth-btn-arrow">→</span>
-          </button>
-        </div>
-
-        <div class="auth-recovery">
-          <button class="auth-recovery-toggle" id="recovery-toggle" aria-expanded="false">
-            <span>Can't find your access code?</span>
-            <span class="auth-recovery-chev">›</span>
-          </button>
-          <div class="auth-recovery-panel" id="recovery-panel">
-            <ol class="recovery-steps">
-              <li><strong>Search your inbox</strong> for an email from DECRYPT with the subject <em>Registration confirmed</em>. Your access code is inside.</li>
-              <li><strong>Check spam / promotions</strong> folders if it isn't in your main inbox.</li>
-              <li><strong>Still locked out?</strong> Contact the DECRYPT team with your registered email and we'll help you recover access.</li>
-            </ol>
-            <a class="recovery-contact" href="mailto:teamdecryptinfo@gmail.com?subject=DECRYPT%202.0%20—%20Access%20Code%20Recovery">Contact DECRYPT →</a>
-          </div>
+      <div class="recovery" id="recovery">
+        <button type="button" class="recovery-toggle" id="recovery-toggle" aria-expanded="false">Can't find your access code?</button>
+        <div class="recovery-panel" id="recovery-panel">
+          <ol>
+            <li>Search your inbox for <em>Registration confirmed</em> from DECRYPT. The code is inside.</li>
+            <li>Check spam and promotions folders.</li>
+            <li>Still stuck? Email us from your registered address and we'll recover it for you.</li>
+          </ol>
+          <a href="mailto:teamdecryptinfo@gmail.com?subject=DECRYPT%202.0%20%E2%80%94%20Access%20code%20recovery" class="link">Email the DECRYPT team</a>
         </div>
       </div>
     </div>
+  </section>
+</main>
 
-  </div>
-</div>
-
-<!-- ============================================================
-     UNLOCK SEQUENCE — cinematic access gate
-     ============================================================ -->
-<div class="unlock-veil" id="unlock-veil" aria-hidden="true">
+<!-- Unlock overlay -->
+<div class="unlock" id="unlock-veil" aria-hidden="true">
   <div class="unlock-box">
-    <div class="unlock-ring" id="unlock-ring">
-      <svg class="unlock-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="4" y="10" width="16" height="10" rx="2.5"/>
-        <path class="unlock-shackle" d="M8 10V7a4 4 0 0 1 8 0v3"/>
-        <circle class="unlock-keyhole" cx="12" cy="15" r="1.4" fill="currentColor" stroke="none"/>
-      </svg>
-    </div>
-    <p class="unlock-status mono" id="unlock-status">VERIFYING…</p>
-    <div class="unlock-bar"><span class="unlock-bar-fill" id="unlock-bar-fill"></span></div>
+    <svg class="unlock-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2"/>
+      <path class="unlock-shackle" d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/>
+      <circle cx="12" cy="15.5" r="1.3" fill="currentColor" stroke="none"/>
+    </svg>
+    <p class="unlock-status" id="unlock-status">Checking your code</p>
+    <div class="unlock-bar"><span id="unlock-bar-fill"></span></div>
   </div>
 </div>
 
 <!-- ============================================================
-     PORTAL SHELL
+     APP SHELL
      ============================================================ -->
-<div class="portal-shell" id="portal-shell" style="display:none">
+<div class="app" id="portal-shell" hidden>
 
-  <!-- Top bar -->
-  <header class="portal-topbar">
-    <div class="portal-topbar-inner">
-      <div class="portal-brand">
-        <span class="portal-brand-dot"></span>
-        <span class="portal-brand-name">DECRYPT</span>
-        <span class="portal-brand-tag">2.0</span>
+  <aside class="side" id="side" aria-label="Portal navigation">
+    <div class="side-head">
+      <span class="logo-tile">D.</span>
+      <div class="side-brand">
+        <strong>DECRYPT</strong>
+        <span class="tag">2.0 Participant</span>
       </div>
-      <div class="portal-topbar-right">
-        <span class="portal-status-pill" id="portal-status-pill"></span>
-        <span class="portal-greeting" id="portal-greeting"></span>
-        <button class="portal-logout" id="portal-logout">Sign out</button>
+      <button class="icon-btn side-close" id="side-close" aria-label="Close menu"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+
+    <nav class="side-nav">
+      <p class="side-group">Main menu</p>
+      <a class="nav-item" href="#/dashboard" data-page="dashboard" target="_self"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="8" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.5"/><rect x="13.5" y="11.5" width="7" height="9" rx="1.5"/><rect x="3.5" y="14.5" width="7" height="6" rx="1.5"/></svg><span>Dashboard</span></a>
+      <a class="nav-item" href="#/event" data-page="event" target="_self"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg><span>My event</span></a>
+      <a class="nav-item" href="#/pass" data-page="pass" target="_self"><svg viewBox="0 0 24 24"><path d="M3.5 8.5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v1.3a2.2 2.2 0 0 0 0 4.4v1.3a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-1.3a2.2 2.2 0 0 0 0-4.4z"/><path d="M14 6.5v11" stroke-dasharray="1.5 2.5"/></svg><span>My access pass</span></a>
+      <a class="nav-item" href="#/speakers" data-page="speakers" target="_self"><svg viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 19.5c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5"/><path d="M16 5.2a3.3 3.3 0 0 1 0 6.3M18 14.4c2 .6 3.5 2.2 3.5 5.1"/></svg><span>Speakers</span></a>
+      <a class="nav-item" href="#/resources" data-page="resources" target="_self"><svg viewBox="0 0 24 24"><path d="M5 4v16M9.5 4v16M14 6l5 14"/></svg><span>Resources hub</span></a>
+      <a class="nav-item" href="#/community" data-page="community" target="_self"><svg viewBox="0 0 24 24"><path d="M4 5.5h11a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5H9l-3.5 3v-3H4A1.5 1.5 0 0 1 2.5 13V7A1.5 1.5 0 0 1 4 5.5z"/><path d="M19 9.5h1a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5H19V21l-3-2.5h-4"/></svg><span>Community</span></a>
+      <a class="nav-item" href="#/achievements" data-page="achievements" target="_self"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="M9 13.8 7.5 21 12 18.5l4.5 2.5-1.5-7.2"/></svg><span>Achievements</span></a>
+
+      <p class="side-group">Support</p>
+      <a class="nav-item" href="#/notifications" data-page="notifications" target="_self"><svg viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 21a2.2 2.2 0 0 0 4 0"/></svg><span>Notifications</span><b class="count-badge" id="nav-unread" hidden>0</b></a>
+      <a class="nav-item" href="#/help" data-page="help" target="_self"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.3"/><path d="m6 6 3.6 3.6M18 6l-3.6 3.6M6 18l3.6-3.6M18 18l-3.6-3.6"/></svg><span>Help &amp; support</span></a>
+      <a class="nav-item" href="#/settings" data-page="settings" target="_self"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4 18 18M6 18l1.6-1.6M16.4 7.6 18 6"/></svg><span>Settings</span></a>
+    </nav>
+
+    <div class="side-foot">
+      <div class="me">
+        <span class="avatar" id="me-avatar"></span>
+        <div class="me-text"><strong id="me-name"></strong><span id="me-track"></span></div>
+        <button class="icon-btn" id="portal-logout" aria-label="Sign out" title="Sign out"><svg viewBox="0 0 24 24"><path d="M9 4.5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3M14 8l4 4-4 4M18 12H9"/></svg></button>
       </div>
     </div>
-  </header>
+  </aside>
+  <div class="scrim" id="scrim"></div>
 
-  <!-- Banner -->
-  <div class="portal-banner-wrap">
-    <canvas class="portal-banner-canvas" id="portal-banner-canvas" aria-hidden="true"></canvas>
-    <div class="portal-banner-scan" aria-hidden="true"></div>
-    <div class="portal-banner-fallback" id="portal-banner-fallback">
-      <div class="portal-banner-fallback-inner">
-        <p class="portal-banner-fallback-title">DECRYPT 2.0</p>
-        <p class="portal-banner-fallback-code" id="portal-banner-fallback-code"></p>
+  <div class="main">
+    <header class="top">
+      <button class="icon-btn menu-btn" id="menu-btn" aria-label="Open menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+      <h1 class="top-title" id="top-title">Dashboard</h1>
+
+      <button class="search-btn" id="search-btn" aria-label="Search the portal">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+        <span>Search the portal</span><kbd>Ctrl K</kbd>
+      </button>
+
+      <div class="top-actions">
+        <button class="icon-btn" id="search-btn-m" aria-label="Search" title="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg></button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Switch theme" title="Switch theme">
+          <svg class="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
+        </button>
+        <a class="icon-btn" id="bell-btn" href="#/notifications" target="_self" aria-label="Notifications" title="Notifications"><svg viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 21a2.2 2.2 0 0 0 4 0"/></svg><i class="bell-dot" id="bell-dot" hidden></i></a>
+        <a class="rewards-btn" href="#/achievements" target="_self" aria-label="Rewards" title="Rewards"><svg viewBox="0 0 24 24"><rect x="3.5" y="8.5" width="17" height="4" rx="1"/><path d="M5 12.5V20h14v-7.5M12 8.5V20M12 8.5c-1.2-3.5-5.5-3.6-5.5-1.2 0 1.500 2.500 1.200 5.500 1.200zM12 8.5c1.200-3.500 5.500-3.600 5.500-1.200 0 1.500-2.500 1.200-5.500 1.200z"/></svg><span id="rewards-xp">0 XP</span></a>
       </div>
+    </header>
+
+    <div class="banner" id="campaign-alert" role="status" aria-live="polite">
+      <span id="campaign-alert-msg">New message from DECRYPT.</span>
+      <a href="#/notifications" target="_self" class="link">Read it</a>
+      <button class="icon-btn sm" id="campaign-alert-close" aria-label="Dismiss"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+
+    <div class="content" id="content">
+      <section class="page" id="page-dashboard" data-page="dashboard"></section>
+      <section class="page" id="page-event" data-page="event"></section>
+      <section class="page" id="page-pass" data-page="pass"></section>
+      <section class="page" id="page-speakers" data-page="speakers"></section>
+      <section class="page" id="page-resources" data-page="resources"></section>
+      <section class="page" id="page-community" data-page="community"></section>
+      <section class="page" id="page-achievements" data-page="achievements"></section>
+      <section class="page" id="page-notifications" data-page="notifications"></section>
+      <section class="page" id="page-help" data-page="help"></section>
+      <section class="page" id="page-settings" data-page="settings"></section>
     </div>
   </div>
-
-  <!-- Nav tabs (desktop / tablet) -->
-  <nav class="portal-nav" aria-label="Portal sections">
-    <div class="portal-nav-inner" id="portal-nav-inner">
-      <span class="portal-nav-indicator" id="portal-nav-indicator"></span>
-      <button class="portal-nav-item active" data-tab="home">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>Home</span>
-      </button>
-      <button class="portal-nav-item" data-tab="details">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-        <span>My details</span>
-      </button>
-      <button class="portal-nav-item" data-tab="event">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        <span>Event info</span>
-      </button>
-      <button class="portal-nav-item" data-tab="qr">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M14 21h.01M18 21h.01M21 14h.01M21 18h.01"/></svg>
-        <span>My QR</span>
-      </button>
-      <button class="portal-nav-item" data-tab="certificate">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M9 14.5L7.5 22 12 19l4.5 3-1.5-7.5"/></svg>
-        <span>Certificate</span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- Tab content -->
-  <main class="portal-content">
-
-    <!-- HOME -->
-    <section class="portal-tab active" id="tab-home">
-      <div class="portal-section-inner">
-        <div class="home-welcome reveal">
-          <p class="eyebrow">Participant overview</p>
-          <h2 class="home-title" id="home-title">Good to see you.</h2>
-          <p class="home-sub" id="home-sub">Here's a quick look at where things stand for you.</p>
-        </div>
-        <div id="pass-slot"></div>
-        <div id="live-slot"></div>
-        <div id="daily-slot"></div>
-        <div id="journey-slot"></div>
-        <div id="ach-slot"></div>
-        <div class="home-cards" id="home-cards"></div>
-        <div class="home-quick" id="home-quick"></div>
-      </div>
-    </section>
-
-    <!-- MY DETAILS -->
-    <section class="portal-tab" id="tab-details">
-      <div class="portal-section-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">On file</p>
-          <h2>My registration</h2>
-          <p class="section-sub">Everything we have on file for you.</p>
-        </div>
-        <div class="details-grid" id="details-grid"></div>
-      </div>
-    </section>
-
-    <!-- EVENT INFO -->
-    <section class="portal-tab" id="tab-event">
-      <div class="portal-section-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">DECRYPT 2.0</p>
-          <h2>Event information</h2>
-          <p class="section-sub">Everything you need for the day.</p>
-        </div>
-        <div id="event-info-body"></div>
-      </div>
-    </section>
-
-    <!-- MY QR -->
-    <section class="portal-tab" id="tab-qr">
-      <div class="portal-section-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">Check-in</p>
-          <h2>My QR code</h2>
-          <p class="section-sub">Show this at check-in or let the scanner read it from your screen.</p>
-        </div>
-        <div class="qr-wrap" id="qr-wrap">
-          <div class="qr-box" id="qr-box">
-            <span class="qr-corner tl"></span><span class="qr-corner tr"></span>
-            <span class="qr-corner bl"></span><span class="qr-corner br"></span>
-            <img class="qr-img" id="qr-img" alt="Your access QR code">
-            <button class="qr-code-label mono" id="qr-code-label" title="Tap to copy"></button>
-          </div>
-          <button class="qr-download-btn btn-ripple" id="qr-download-btn">Download QR code</button>
-          <p class="qr-hint">Save this to your photos so you always have it handy — even offline.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CERTIFICATE -->
-    <section class="portal-tab" id="tab-certificate">
-      <div class="portal-section-inner">
-        <div class="section-head reveal">
-          <p class="eyebrow">Recognition</p>
-          <h2>My certificate</h2>
-          <p class="section-sub">Issued after DECRYPT 2.0 closes.</p>
-        </div>
-        <div id="cert-body"></div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="portal-footer">
-    <p>DECRYPT 2.0 · Creativity With Intention.</p>
-  </footer>
-
-  <!-- Mobile bottom navigation -->
-  <nav class="portal-bottomnav" aria-label="Portal sections mobile">
-    <button class="bnav-item active" data-tab="home">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span>Home</span>
-    </button>
-    <button class="bnav-item" data-tab="details">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      <span>Details</span>
-    </button>
-    <button class="bnav-item" data-tab="event">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-      <span>Event</span>
-    </button>
-    <button class="bnav-item" data-tab="qr">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01"/></svg>
-      <span>My QR</span>
-    </button>
-    <button class="bnav-item" data-tab="certificate">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M9 14.5L7.5 22 12 19l4.5 3-1.5-7.5"/></svg>
-      <span>Cert</span>
-    </button>
-  </nav>
-
 </div>
 
-<!-- ============================================================
-     DIGITAL DECRYPT PASS — presentation sheet
-     ============================================================ -->
-<div class="modal-veil" id="pass-overlay" role="dialog" aria-modal="true" aria-label="Digital DECRYPT Pass" aria-hidden="true">
-  <div class="pass-sheet">
-    <div class="pass-sheet-handle" aria-hidden="true"></div>
+<!-- Search palette -->
+<div class="modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search the portal" aria-hidden="true">
+  <div class="palette">
+    <div class="palette-input">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+      <input type="text" id="search-input" placeholder="Search pages, speakers and resources" autocomplete="off">
+      <kbd>Esc</kbd>
+    </div>
+    <ul class="palette-list" id="search-results"></ul>
+  </div>
+</div>
+
+<!-- Pass sheet -->
+<div class="modal" id="pass-overlay" role="dialog" aria-modal="true" aria-label="Your DECRYPT access pass" aria-hidden="true">
+  <div class="sheet">
     <div id="pass-full"></div>
-    <div class="pass-sheet-actions">
-      <button class="pass-save-btn btn-ripple" id="pass-save">Save pass</button>
-      <button class="pass-close-btn" id="pass-close">Close</button>
+    <div class="sheet-actions">
+      <button class="btn btn-primary" id="pass-save">Save pass as image</button>
+      <button class="btn btn-ghost" id="pass-close">Close</button>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     DAILY DECRYPT — game modal
-     ============================================================ -->
-<div class="modal-veil" id="dd-modal" role="dialog" aria-modal="true" aria-label="Daily Decrypt" aria-hidden="true">
-  <div class="dd-modal-card">
-    <button class="modal-close" id="dd-close" aria-label="Close game">✕</button>
+<!-- Daily Decrypt -->
+<div class="modal" id="dd-modal" role="dialog" aria-modal="true" aria-label="Daily Decrypt" aria-hidden="true">
+  <div class="sheet dd-sheet">
+    <button class="icon-btn sheet-x" id="dd-close" aria-label="Close game"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     <div id="dd-body"></div>
   </div>
 </div>
 
-<div id="toast" class="portal-toast" role="status" aria-live="polite"></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script src="js/portal.js"></script>
 </body>
