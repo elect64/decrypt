@@ -80,13 +80,10 @@
         align-items: center;
         gap: 14px;
         padding: 12px 16px 12px 12px;
-        border: 1px solid rgba(255,255,255,0.14);
-        border-radius: 22px;
-        background: rgba(18, 24, 20, 0.82);
-        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
-        -webkit-backdrop-filter: blur(14px);
-        backdrop-filter: blur(14px);
-        color: #f5f7f6;
+        border: 1px solid var(--c-border-2, rgba(255,255,255,0.18));
+        border-radius: 12px;
+        background: var(--c-surface, #111A14);
+        color: var(--c-text, #f5f7f6);
       }
 
       .decrypt-app-toast__icon {
@@ -94,9 +91,9 @@
         place-items: center;
         width: 38px;
         height: 38px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #1ecf72, #3cb371);
-        color: #041109;
+        border-radius: 8px;
+        background: #07220C;
+        color: #fff;
         font-weight: 800;
         font-size: 1.05rem;
         letter-spacing: 0.04em;
@@ -110,7 +107,7 @@
         line-height: 1.3;
         letter-spacing: 0.01em;
         font-weight: 600;
-        color: rgba(255,255,255,0.96);
+        color: var(--c-text, #f5f7f6);
       }
 
       .decrypt-app-toast__cta {
@@ -119,12 +116,13 @@
         justify-content: center;
         min-width: 84px;
         padding: 10px 14px;
-        border-radius: 999px;
-        background: #fff;
-        color: #081a11;
-        font-size: 0.78rem;
+        border-radius: 8px;
+        background: var(--c-accent, #3DDC7A);
+        color: var(--c-accent-ink, #04130A);
+        font-family: var(--font-mono, monospace);
+        font-size: 0.7rem;
         font-weight: 700;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.1em;
         text-decoration: none;
         text-transform: uppercase;
         white-space: nowrap;

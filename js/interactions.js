@@ -240,7 +240,7 @@ const DecryptUI = (() => {
     const s = DECRYPT_CONFIG.SOCIAL_LINKS;
     const map = [['instagram', 'Instagram'], ['facebook', 'Facebook'], ['whatsapp', 'WhatsApp'], ['linkedin', 'LinkedIn'], ['email', 'Email']];
     document.getElementById('footer-social').innerHTML = map.map(([key, label]) => {
-      const href = key === 'email' ? `mailto:${s.email}` : s[key];
+      const href = key === 'email' ? (/^mailto:/i.test(s.email) ? s.email : `mailto:${s.email}`) : s[key];
       const target = key === 'email' ? '' : ' target="_blank" rel="noopener noreferrer"';
       return `<a class="social-link" href="${href}"${target} data-cursor>${label}</a>`;
     }).join('');
@@ -294,7 +294,7 @@ const DecryptUI = (() => {
     const s = DECRYPT_CONFIG.SOCIAL_LINKS;
     const join = document.getElementById('join-movement');
     const follow = document.getElementById('follow-decrypt');
-    if (join) { join.href = `mailto:${s.email}`; }
+    if (join) { join.href = (/^mailto:/i.test(s.email) ? s.email : `mailto:${s.email}`); }
     if (follow) { follow.href = s.instagram; follow.target = '_blank'; follow.rel = 'noopener noreferrer'; }
   }
 
@@ -321,6 +321,7 @@ const DecryptUI = (() => {
   const dialog = document.getElementById('privacy-policy-dialog');
   const openBtn = document.getElementById('privacy-policy-button');
   const closeBtn = document.getElementById('privacy-policy-close');
+  if (!dialog || !openBtn || !closeBtn) return;
 
   openBtn.addEventListener('click', () => {
     if (typeof dialog.showModal === 'function') dialog.showModal();

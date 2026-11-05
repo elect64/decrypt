@@ -111,7 +111,7 @@ const DecryptVault = (() => {
 
   /* ---- Scene 3: THE CIPHER — falling glyphs that never stop resolving ---- */
   const cipherColumns = [];
-  const CIPHER_GLYPHS = '01DECRYPT#%&';
+  const CIPHER_GLYPHS = '01DECRYPT#%&/+=';
   function initCipher() {
     cipherColumns.length = 0;
     const n = 18;
@@ -135,8 +135,8 @@ const DecryptVault = (() => {
 
   function palette() {
     return state.theme === 'dark'
-      ? { space1: '#0A2E12', space2: '#03130A', star: 'rgba(255,255,255,', nebula: 'rgba(156,240,176,', line: 'rgba(255,255,255,', accent: '#9CF0B0', panel: 'rgba(156,240,176,' }
-      : { space1: '#E7EBE2', space2: '#DCE2D6', star: 'rgba(8,19,12,', nebula: 'rgba(14,90,40,', line: 'rgba(8,19,12,', accent: '#0E5A28', panel: 'rgba(14,90,40,' };
+      ? { space1: '#0C1410', space2: '#0C1410', star: 'rgba(255,255,255,', nebula: 'rgba(61,220,122,', line: 'rgba(255,255,255,', accent: '#3DDC7A', panel: 'rgba(61,220,122,' }
+      : { space1: '#F4F6F2', space2: '#F4F6F2', star: 'rgba(12,20,16,', nebula: 'rgba(12,122,54,', line: 'rgba(12,20,16,', accent: '#0C7A36', panel: 'rgba(12,122,54,' };
   }
 
   function initStars(n) {
@@ -225,28 +225,15 @@ const DecryptVault = (() => {
     state.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  function drawSpace(ctx, w, h, t) {
+  function drawSpace(ctx, w, h) {
     const p = palette();
     ctx.fillStyle = p.space2;
     ctx.fillRect(0, 0, w, h);
-    const grad = ctx.createRadialGradient(w * 0.5, h * 0.4, 0, w * 0.5, h * 0.5, w * 0.85);
-    grad.addColorStop(0, p.space1);
-    grad.addColorStop(1, p.space2);
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, w, h);
-
-    stars.forEach(s => {
-      const tw = Math.sin(t * s.speed + s.twinkle) * 0.5 + 0.5;
-      ctx.fillStyle = p.star + (0.25 + tw * 0.6) + ')';
-      ctx.beginPath();
-      ctx.arc(s.x * w, s.y * h, s.size, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    ctx.fillStyle = p.nebula + '0.09)';
-    ctx.beginPath(); ctx.arc(w * 0.18, h * 0.28, w * 0.24, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = p.nebula + '0.06)';
-    ctx.beginPath(); ctx.arc(w * 0.82, h * 0.72, w * 0.2, 0, Math.PI * 2); ctx.fill();
+    // faint ruled lines, like ledger paper
+    ctx.strokeStyle = p.line + '0.05)';
+    ctx.lineWidth = 1;
+    const step = Math.max(28, h / 12);
+    for (let y = step; y < h; y += step) { ctx.beginPath(); ctx.moveTo(0, Math.round(y) + 0.5); ctx.lineTo(w, Math.round(y) + 0.5); ctx.stroke(); }
   }
 
   function drawVaultFrame(ctx, w, h, loopT) {
@@ -388,54 +375,39 @@ const DecryptVault = (() => {
   }
 
   function drawCipher(ctx, w, h, t) {
+    // Rows of text that resolve from noise into the word, left to right, then re-scramble.
     const p = palette();
-    if (!cipherColumns.length) initCipher();
-    ctx.textAlign = 'center';
-    ctx.font = `${Math.max(10, w * 0.013)}px ui-monospace, monospace`;
-    cipherColumns.forEach(c => {
-      c.y += c.speed * 0.0026;
-      if (c.y > 1.4) { c.y = -0.4; c.seed = Math.random() * 100; }
-      for (let j = 0; j < c.len; j++) {
-        const yy = c.y - j * 0.045;
-        if (yy < 0 || yy > 1) continue;
-        const idx = Math.floor(t * 3 + c.seed + j) % CIPHER_GLYPHS.length;
-        const ch = CIPHER_GLYPHS[idx];
-        const alpha = j === 0 ? 0.95 : Math.max(0, 0.5 - j * 0.09);
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = j === 0 ? p.accent : p.line + '1)';
-        ctx.fillText(ch, c.x * w, yy * h);
+    const WORDS = ['KNOWLEDGE', 'EXPOSURE', 'PEOPLE', 'IDEAS', 'OPPORTUNITY', 'EXECUTION', 'CURIOSITY'];
+    const rows = 7;
+    const fs = Math.max(11, Math.min(w * 0.03, h * 0.07));
+    ctx.font = `500 ${fs}px "JetBrains Mono", ui-monospace, monospace`;
+    ctx.textBaseline = 'middle';
+    const left = w * 0.08, rowH = h * 0.8 / rows, top = h * 0.1 + rowH / 2;
+    const cycle = 6.5;
+    for (let r = 0; r < rows; r++) {
+      const word = WORDS[r % WORDS.length];
+      const local = ((t + r * 0.9) % cycle) / cycle;           // 0..1
+      const resolved = Math.min(word.length, Math.max(0, Math.floor((local - 0.15) / 0.45 * word.length)));
+      const fade = local > 0.85 ? 1 - (local - 0.85) / 0.15 : 1;
+      const y = top + r * rowH;
+      ctx.globalAlpha = 0.55 * fade;
+      ctx.fillStyle = p.line + '1)';
+      ctx.fillText(String(r + 1).padStart(2, '0'), left - fs * 2.2, y);
+      let x = left;
+      for (let i = 0; i < word.length; i++) {
+        const done = i < resolved;
+        const ch = done ? word[i] : CIPHER_GLYPHS[Math.floor(t * 9 + i * 7 + r * 3) % CIPHER_GLYPHS.length];
+        ctx.globalAlpha = (done ? 1 : 0.35) * fade;
+        ctx.fillStyle = done ? p.accent : p.line + '1)';
+        ctx.fillText(ch, x, y);
+        x += fs * 0.72;
       }
-    });
+      ctx.globalAlpha = 0.14 * fade;
+      ctx.fillStyle = p.line + '1)';
+      ctx.fillRect(left, y + rowH / 2 - 0.5, w * 0.84, 1);
+    }
     ctx.globalAlpha = 1;
-    ctx.textAlign = 'left';
-  }
-
-  function drawOrbit(ctx, w, h, t) {
-    const p = palette();
-    const cx = w * 0.5, cy = h * 0.5;
-    const pulse = Math.sin(t * 1.4) * 0.15 + 0.6;
-    ctx.strokeStyle = p.accent;
-    ctx.lineWidth = 2;
-    ctx.globalAlpha = pulse;
-    ctx.beginPath(); ctx.arc(cx, cy - 5, 8, 0, Math.PI * 2); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx, cy + 3); ctx.lineTo(cx, cy + 19); ctx.stroke();
-    ctx.globalAlpha = 1;
-    orbitRings.forEach((ring, ri) => {
-      const rad = ring.r * Math.min(w, h);
-      ctx.strokeStyle = p.line + '0.1)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.ellipse(cx, cy, rad, rad * 0.55, 0, 0, Math.PI * 2); ctx.stroke();
-      for (let i = 0; i < ring.count; i++) {
-        const angle = t * ring.speed + (i / ring.count) * Math.PI * 2;
-        const px = cx + Math.cos(angle) * rad;
-        const py = cy + Math.sin(angle) * rad * 0.55;
-        const tw = Math.sin(t * 2 + i + ri) * 0.4 + 0.6;
-        ctx.fillStyle = p.accent;
-        ctx.globalAlpha = tw;
-        ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2); ctx.fill();
-      }
-    });
-    ctx.globalAlpha = 1;
+    ctx.textBaseline = 'alphabetic';
   }
 
   const scenes = [
@@ -466,10 +438,8 @@ const DecryptVault = (() => {
     const ctx = state.ctx, w = state.width, h = state.height;
 
     ctx.clearRect(0, 0, w, h);
-    drawSpace(ctx, w, h, now);
+    drawSpace(ctx, w, h);
     scenes[state.sceneIndex].draw(ctx, w, h, t, loopT);
-    drawMotes(ctx, w, h);
-
     state.animationId = requestAnimationFrame(animate);
   }
 

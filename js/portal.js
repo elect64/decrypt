@@ -19,26 +19,26 @@ const DECRYPT_SESSIONS = [
     startISO: '2026-10-30T19:00:00', endISO: '2026-10-31T21:00:00' }
 ];
 
-/* SPEAKERS — fill in as confirmed. Shown on the Speakers page.
+/* SPEAKERS — profiles shown on the Speakers page.
    { name, role, topic, session, bio, photo (image URL), link }  */
 const DECRYPT_SPEAKERS = [
-   { name: 'Miss Anjolaoluwa Anifowose', role: 'Founder, The Growth Circle', topic: 'Creativity With Character', session: 'Opening Session', bio: '', photo: 'assets/sp-anjolaoluwa.png', link: '' },
-   {name: 'Mr Femi Olowo', role: 'Founder, FOB Visuals', topic: 'Professional Creator', session: 'The Creators Responsibility', bio: '', photo: 'assets/sp-femi.png', link: '' },
-  {name: 'Mr Daniel Andikan', role: 'Founder, Primforte', topic: 'Brand Designer', session: 'From Good Enough to Remarkable', bio: '', photo: 'assets/sp-daniel.png', link: '' },
-  {name: 'Mr Gideon Omonkhuale', role: 'Founder, Dispatch Me & President NACOS Uniport', topic: 'Builder', session: 'The Craft Behind the Content', bio: '', photo: 'assets/sp-gideon.png', link: '' },
-  {name: 'Mr Elect Okezie', role: 'Video Editor', topic: 'Video Editing', session: 'Resourceful Not Resource Limited', bio: '', photo: 'assets/sp-elect.png', link: '' },
+  { name: 'Miss Anjolaoluwa Anifowose', role: 'Founder, The Growth Circle', topic: 'Creativity With Character', session: 'Opening Session', bio: '', photo: 'assets/sp-anjolaoluwa.png', link: '' },
+  { name: 'Mr Femi Olowo', role: 'Founder, FOB Visuals', topic: 'Professional Creator', session: 'The Creators Responsibility', bio: '', photo: 'assets/sp-femi.png', link: '' },
+  { name: 'Mr Daniel Andikan', role: 'Founder, Primforte', topic: 'Brand Designer', session: 'From Good Enough to Remarkable', bio: '', photo: 'assets/sp-daniel.png', link: '' },
+  { name: 'Mr Gideon Omonkhuale', role: 'Founder, Dispatch Me & President NACOS Uniport', topic: 'Builder', session: 'The Craft Behind the Content', bio: '', photo: 'assets/sp-gideon.png', link: '' },
+  { name: 'Mr Elect Okezie', role: 'Video Editor', topic: 'Video Editing', session: 'Resourceful Not Resource Limited', bio: '', photo: 'assets/sp-elect.png', link: '' }
 ];
 
-/* Fill in title and url to publish; Audio and Video categories get built-in players. */
+/* RESOURCES — slides, recordings, tools, reading.
+   { title, category ('Slides'|'Recording'|'Tool'|'Reading'…), description, url } */
 const DECRYPT_RESOURCES = [
   { title: 'Decrypt 2.0 Day 1 - Miss Anjiee', category: 'Audio', description: 'Miss Anjolaoluwa Anifowose', url: 'assets/Day 1 - Miss Anjie.m4a' },
   { title: 'Decrypt 2.0 Day 1 - Stream 1', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 1 - Stream1.ogg' },
-    { title: 'Decrypt 2.0 Day 1 - Stream 2', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 1 - Stream2.ogg' },
+  { title: 'Decrypt 2.0 Day 1 - Stream 2', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 1 - Stream2.ogg' },
   { title: 'Decrypt 2.0 Day 1', category: 'Video', description: 'Full Stream', url: 'assets/Decryptv2_Ms. Anjolaoluwa.mp4' },
   { title: 'Decrypt 2.0 Day 2 - Mr Elect', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 2 - Mr Elect.mp3' },
   { title: 'Decrypt 2.0 Day 2 - Full Stream', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 2 - Full Stream.ogg' },
   { title: 'Decrypt 2.0 Day 2', category: 'Video', description: 'Full Stream', url: 'assets/Day 2.mp4' }
-  // { title: 'Opening session slides', category: 'Slides', description: 'PDF', url: 'https://…' }
 ];
 
 /* COMMUNITY — channels participants can join.
@@ -159,7 +159,7 @@ const ico = (n, cls) => '<svg viewBox="0 0 24 24" class="i' + (cls ? ' ' + cls :
 function openModal(id) { const m = $('#' + id); if (!m) return; m.classList.add('visible'); m.setAttribute('aria-hidden', 'false'); }
 function closeModal(id) { const m = $('#' + id); if (!m) return; m.classList.remove('visible'); m.setAttribute('aria-hidden', 'true'); }
 document.addEventListener('click', e => { if (e.target.classList && e.target.classList.contains('modal')) closeModal(e.target.id); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal('search-modal'); closeModal('pass-overlay'); closeModal('dd-modal'); Shell.closeMenu(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal('pass-overlay'); closeModal('dd-modal'); Shell.closeMenu(); } });
 
 /* ==========================================================
    THEME + MOTION
@@ -174,16 +174,13 @@ const Theme = (function () {
     $('#meta-theme-color').setAttribute('content', t === 'dark' ? '#0B0C0B' : '#F1F2EE');
     if (persist !== false) ls.set(K.theme, p);
   }
-  function toggle() {
-    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    apply(next);
-    if (P) Pages.settings();
-  }
   function init() {
     apply(pref(), false);
     mq.addEventListener('change', () => { if (pref() === 'system') apply('system', false); });
-    $('#theme-toggle').addEventListener('click', toggle);
-    $('#gate-theme-toggle').addEventListener('click', toggle);
+    $('#theme-toggle').addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      apply(next); if (P) Pages.settings();
+    });
   }
   return { init, apply, pref };
 })();
@@ -302,30 +299,12 @@ let _page = 'dashboard';
 let _bound = false;
 
 const Shell = (function () {
-  function openSearch() {
-    const items = NAV_MAIN.concat(NAV_SUPPORT);
-    const results = $('#search-results');
-    const input = $('#search-input');
-    const render = () => {
-      const query = input.value.trim().toLowerCase();
-      const matches = items.filter(item => item.label.toLowerCase().includes(query));
-      results.innerHTML = matches.length
-        ? matches.map(item => '<li><a href="#/' + item.id + '" data-go="' + item.id + '">' + ico(item.icon) + '<span>' + esc(item.label) + '</span><small>Page</small></a></li>').join('')
-        : '<li class="palette-empty">No matching pages</li>';
-    };
-    input.value = '';
-    render();
-    openModal('search-modal');
-    input.focus();
-    input.oninput = render;
-    input.onkeydown = e => {
-      if (e.key === 'Enter') {
-        const first = results.querySelector('a');
-        if (first) first.click();
-      }
-    };
+  function buildNav() {
+    const mk = n => '<button class="nav-item" data-page="' + n.id + '">' + ico(n.icon) + '<span>' + n.label + '</span>' +
+      (n.id === 'notifications' ? '<span class="badge" id="nav-badge" hidden></span>' : '') + '</button>';
+    $('#nav-main').innerHTML = NAV_MAIN.map(mk).join('');
+    $('#nav-support').innerHTML = NAV_SUPPORT.map(mk).join('');
   }
-
   function openMenu() { $('#side').classList.add('open'); $('#scrim').classList.add('show'); }
   function closeMenu() { $('#side').classList.remove('open'); $('#scrim').classList.remove('show'); }
 
@@ -334,7 +313,7 @@ const Shell = (function () {
     _page = page;
     $$('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + page));
     $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.page === page));
-    $('#top-title').textContent = TITLES[page];
+    $('#page-title').textContent = TITLES[page];
     document.title = TITLES[page] + ' — DECRYPT 2.0';
     if (push !== false && location.hash !== '#/' + page) history.pushState(null, '', '#/' + page);
     closeMenu(); window.scrollTo(0, 0);
@@ -347,30 +326,18 @@ const Shell = (function () {
 
   function bindOnce() {
     if (_bound) return; _bound = true;
+    buildNav();
     document.addEventListener('click', e => {
       const t = e.target.closest('[data-go]');
-      if (t) { e.preventDefault(); closeModal('search-modal'); go(t.dataset.go); return; }
+      if (t) { e.preventDefault(); go(t.dataset.go); return; }
       const n = e.target.closest('.nav-item');
-      if (n) { e.preventDefault(); go(n.dataset.page); return; }
-      const link = e.target.closest('a[href^="#/"]');
-      if (link) {
-        e.preventDefault();
-        const page = (link.hash.match(/^#\/([a-z]+)/) || [])[1];
-        if (page) go(page);
-      }
+      if (n) go(n.dataset.page);
     });
     window.addEventListener('popstate', () => { if (P) go(fromHash(), false); });
     $('#menu-btn').addEventListener('click', openMenu);
     $('#side-close').addEventListener('click', closeMenu);
     $('#scrim').addEventListener('click', closeMenu);
-    $('#search-btn').addEventListener('click', openSearch);
-    $('#search-btn-m').addEventListener('click', openSearch);
-    document.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        openSearch();
-      }
-    });
+    $('#bell').addEventListener('click', () => go('notifications'));
     $('#portal-logout').addEventListener('click', Auth.logout);
     PassModal.init(); DailyDecrypt.init();
   }
@@ -378,9 +345,11 @@ const Shell = (function () {
   function show() {
     $('#auth-veil').hidden = true; $('#portal-shell').hidden = false;
     bindOnce();
-    $('#me-avatar').textContent = initials(P);
-    $('#me-name').textContent = P.name || 'Participant';
-    $('#me-track').textContent = P.track || P.code || 'Participant';
+    $('#who-avatar').textContent = initials(P);
+    $('#who-name').textContent = P.name || 'Participant';
+    $('#who-code').textContent = P.code;
+    const ci = P.status === 'CHECKED_IN';
+    $('#status-chip').innerHTML = pill(ci ? 'Checked in' : 'Registered', ci ? 'ok' : 'warn');
     Pages.renderAll();
     loadEvent(); startPolling(); refreshCert();
     go(fromHash(), false);
@@ -454,7 +423,7 @@ function buildNotifs() {
 function unreadCount() { const r = readSet(); return buildNotifs().filter(n => !r.has(n.id)).length; }
 function updateBadges() {
   const n = unreadCount();
-  const b = $('#nav-unread'), d = $('#bell-dot');
+  const b = $('#nav-badge'), d = $('#bell-dot');
   if (b) { b.hidden = !n; b.textContent = n > 9 ? '9+' : n; }
   if (d) d.hidden = !n;
 }
@@ -859,25 +828,14 @@ const Pages = (function () {
   /* ----- Resources ----- */
   let _resFilter = 'All';
   function resources() {
-    const available = DECRYPT_RESOURCES.filter(r => r.title && r.title.trim() && r.url && r.url.trim());
-    const cats = ['All'].concat(Array.from(new Set(available.map(r => r.category).filter(Boolean))));
-    const items = available.filter(r => _resFilter === 'All' || r.category === _resFilter);
+    const cats = ['All'].concat(Array.from(new Set(DECRYPT_RESOURCES.map(r => r.category).filter(Boolean))));
+    const items = DECRYPT_RESOURCES.filter(r => _resFilter === 'All' || r.category === _resFilter);
     let body;
-    if (!available.length) {
+    if (!DECRYPT_RESOURCES.length) {
       body = '<section class="panel"><div class="empty"><span class="li-ico">' + ico('library') + '</span><b>Nothing here yet</b><p>Slides, recordings and tools from the sessions will be posted here for participants.</p></div></section>';
     } else {
       body = (cats.length > 2 ? '<div class="filters">' + cats.map(c => '<button class="chip' + (c === _resFilter ? ' on' : '') + '" data-rf="' + esc(c) + '">' + esc(c) + '</button>').join('') + '</div>' : '') +
-        '<section class="panel">' + items.map(r => {
-          const category = (r.category || '').toLowerCase();
-          if (category === 'audio' || category === 'video') {
-            const player = category === 'audio'
-              ? '<audio controls preload="none" src="' + esc(r.url) + '">Your browser does not support audio playback.</audio>'
-              : '<video controls preload="metadata" playsinline><source src="' + esc(r.url) + '">Your browser does not support video playback.</video>';
-            return '<div class="res res-media"><span class="li-ico">' + ico(category === 'audio' ? 'play' : 'file') + '</span><div><b>' + esc(r.title) + '</b>' +
-              (r.description ? '<small>' + esc(r.description) + '</small>' : '') + player + '</div><span class="type">' + esc(r.category) + '</span></div>';
-          }
-          return '<a class="res" href="' + esc(r.url) + '" target="_blank" rel="noopener"><span class="li-ico">' + ico(r.category === 'Reading' ? 'book' : r.category === 'Tool' ? 'link' : 'file') + '</span><div><b>' + esc(r.title) + '</b><small>' + esc(r.description || '') + '</small></div><span class="type">' + esc(r.category || '') + '</span></a>';
-        }).join('') + '</section>';
+        '<section class="panel">' + items.map(r => '<a class="res" href="' + esc(r.url) + '" target="_blank" rel="noopener"><span class="li-ico">' + ico(r.category === 'Reading' ? 'book' : r.category === 'Tool' ? 'link' : 'file') + '</span><div><b>' + esc(r.title) + '</b><small>' + esc(r.description || '') + '</small></div><span class="type">' + esc(r.category || '') + '</span></a>').join('') + '</section>';
     }
     set('resources', head('Resources Hub', 'Slides, recordings and tools from DECRYPT 2.0.') + body);
     $$('[data-rf]').forEach(b => b.addEventListener('click', () => { _resFilter = b.dataset.rf; resources(); }));

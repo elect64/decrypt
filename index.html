@@ -32,7 +32,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/variables.css">
 <link rel="stylesheet" href="css/base.css">
@@ -106,7 +106,7 @@
   <main id="main">
 
     <!-- 01 — ENTRY / HERO -->
-    <section id="hero" class="section" style="min-height:100svh; padding-top: calc(var(--nav-h) + 20px); display:flex; flex-direction:column; justify-content:center;">
+    <section id="hero" class="section section--hero">
       <div class="section-inner hero-grid">
         <div>
           <p class="hero-kicker">A movement for young technology enthusiasts</p>
@@ -150,7 +150,7 @@
     <section id="movement" class="section">
       <div class="section-inner">
         <p class="eyebrow">The movement</p>
-        <p data-reveal style="max-width:760px; font-size:clamp(1.25rem,2.2vw,1.9rem); font-weight:400; margin-bottom:60px; line-height:1.35; text-transform:none;">If you give a willing young person the right knowledge, exposure, people and ideas, they can do exceptional things regardless of the limits of their environment. DECRYPT exists to shorten the distance between curiosity and knowledge, talent and opportunity, ideas and execution.</p>
+        <p data-reveal class="lede">If you give a willing young person the right knowledge, exposure, people and ideas, they can do exceptional things regardless of the limits of their environment. DECRYPT exists to shorten the distance between curiosity and knowledge, talent and opportunity, ideas and execution.</p>
         <div class="node-grid" id="node-grid" data-reveal></div>
       </div>
     </section>
@@ -160,10 +160,10 @@
       <div class="section-inner">
         <p class="eyebrow">The archive</p>
         <h2 data-reveal>Every chapter, preserved and unlocking in order.</h2>
-        <div class="chapter-list" id="chapter-list" data-reveal style="margin-top:54px;"></div>
+        <div class="chapter-list mt-lg" id="chapter-list" data-reveal></div>
         <div class="chapter-detail" id="chapter-detail">
           <p class="label">DECRYPT 1.0 — Programme</p>
-          <div id="session-list" style="margin-top:18px;"></div>
+          <div id="session-list"></div>
         </div>
       </div>
     </section>
@@ -171,11 +171,11 @@
     <!-- 06 — DECRYPT 2.0 -->
     <section class="section section--tight">
       <div class="section-inner">
-        <div id="next-lock" data-reveal style="border:1px solid var(--c-border); padding:clamp(36px,6vw,76px);">
+        <div id="next-lock" data-reveal class="panel-block">
           <p class="eyebrow">The next chamber</p>
           <h2>DECRYPT 2.0 was Lit</h2>
-          <p style="max-width:580px; color:var(--c-text-secondary); margin-top:14px; text-transform:none;">30th - 31st October 2026.</p>
-          <div class="countdown-block" style="margin-top:40px;">
+          <p class="panel-sub">30th - 31st October 2026.</p>
+          <div class="countdown-block mt-lg">
             <span class="countdown-label">Join waitlist for Decrypt 3.0</span>
             <div class="countdown-grid" role="timer" aria-label="Countdown to DECRYPT 2.0">
               <div class="countdown-unit" data-cursor><span class="countdown-number" id="cd-days">00</span><span class="countdown-name">Days</span></div>
@@ -184,7 +184,7 @@
               <div class="countdown-unit" data-cursor><span class="countdown-number" id="cd-secs">00</span><span class="countdown-name">Seconds</span></div>
             </div>
           </div>
-          <p class="label" id="cd-status" style="margin-top:22px;">Locked</p>
+          <p class="label mt-md" id="cd-status">Locked</p>
         </div>
       </div>
     </section>
@@ -194,7 +194,7 @@
       <div class="section-inner">
         <p class="eyebrow">The ecosystem</p>
         <h2 data-reveal>The conference is only the beginning.</h2>
-        <div class="ecosystem" id="ecosystem" data-reveal style="margin-top:48px;"></div>
+        <div class="ecosystem" id="ecosystem" data-reveal></div>
       </div>
     </section>
 
@@ -203,7 +203,7 @@
       <div class="section-inner">
         <p class="eyebrow">Pioneers Of The Vision</p>
         <h2 data-reveal>Speakers, organizers, not a team page.</h2>
-        <div class="speaker-wall" id="speaker-wall" data-reveal style="margin-top:48px;"></div>
+        <div class="speaker-wall" id="speaker-wall" data-reveal></div>
       </div>
     </section>
 
@@ -212,7 +212,7 @@
       <div class="section-inner">
         <p class="eyebrow">The knowledge platform</p>
         <h2 data-reveal>Records from every chapter, filed for reference.</h2>
-        <div class="knowledge-grid" id="knowledge-grid" data-reveal style="margin-top:48px;"></div>
+        <div class="knowledge-grid" id="knowledge-grid" data-reveal></div>
       </div>
     </section>
 
@@ -220,8 +220,8 @@
     <section id="connect" class="section">
       <div class="section-inner">
         <p class="eyebrow">There's always more to unlock</p>
-        <h2 data-reveal class="display" style="font-size:var(--step-h1); max-width:900px;">Ready to unlock more?</h2>
-        <div data-reveal style="display:flex; flex-wrap:wrap; gap:16px; margin-top:44px;">
+        <h2 data-reveal class="display cta-title">Ready to unlock more?</h2>
+        <div data-reveal class="cta-row">
           <a class="btn btn--solid" href="register.html?v=1.1" id="join-movement" data-cursor>Join the movement <span class="btn-arrow">→</span></a>
           <a class="btn btn--outline" href="#" id="follow-decrypt" data-cursor>Follow DECRYPT</a>
         </div>
@@ -308,167 +308,38 @@
 </div>
 
 <style>
-  #decrypt-ai-widget {
-    cursor: default;
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    z-index: 99999;
-    font-family: 'Courier New', Courier, monospace;
-  }
-
+  #decrypt-ai-widget { cursor: default; position: fixed; bottom: 22px; right: 22px; z-index: 99999; font-family: var(--font-body); }
   #ai-launcher {
-    cursor: default;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #000000;
-    color: #FFFFFF;
-    border: 1px solid #1A4D23;
-    padding: 12px 18px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.8rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    transition: transform 0.2s, background 0.2s;
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    background: var(--c-surface); color: var(--c-text);
+    border: 1px solid var(--c-border-2); padding: 11px 16px; border-radius: var(--r);
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+    transition: background .2s, border-color .2s;
   }
-
-  #ai-launcher:hover {
-    background: #07220C;
-    border-color: #3ED97A;
-    transform: scale(1.05);
-  }
-
+  #ai-launcher:hover { background: var(--c-raise); border-color: var(--c-accent); }
   #ai-chat-window {
-    position: absolute;
-    bottom: 65px;
-    right: 0;
-    width: 340px;
-    max-width: calc(100vw - 40px);
-    height: 450px;
-    background: #050D08;
-    border: 1px solid #1A4D23;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-origin: bottom right;
+    position: absolute; bottom: 58px; right: 0; width: 350px; max-width: calc(100vw - 40px); height: 450px;
+    background: var(--c-surface); border: 1px solid var(--c-border-2); border-radius: 12px;
+    display: flex; flex-direction: column; overflow: hidden;
+    transition: opacity .25s ease, transform .25s cubic-bezier(0.16, 1, 0.3, 1); transform-origin: bottom right;
   }
-
-  #ai-chat-window.ai-window-hidden {
-    opacity: 0;
-    transform: scale(0.8);
-    pointer-events: none;
-  }
-
-  .ai-header {
-    background: #0A1C10;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #1A4D23;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-  }
-
-  .ai-header h3 {
-    font-size: 0.85rem;
-    letter-spacing: 2px;
-    color: #FFFFFF;
-    margin: 0;
-    display: inline-block;
-  }
-
-  .ai-status-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: #3ED97A;
-    border-radius: 50%;
-    margin-right: 6px;
-  }
-
-  #ai-close {
-    background: none;
-    border: none;
-    color: #888;
-    font-size: 1.4rem;
-    cursor: pointer;
-  }
-  #ai-close:hover { color: #FFF; }
-
-  .ai-body {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    font-size: 0.82rem;
-  }
-
-  .ai-msg {
-    padding: 10px 14px;
-    border-radius: 8px;
-    line-height: 1.5;
-    max-width: 85%;
-  }
-
-  .ai-bot {
-    background: #0A1C10;
-    color: #E8F5EC;
-    border: 1px solid #16321E;
-    align-self: flex-start;
-  }
-
-  .ai-user {
-    background: #3ED97A;
-    color: #050D08;
-    align-self: flex-end;
-    font-weight: 500;
-  }
-
-  .ai-footer {
-    display: flex;
-    padding: 12px;
-    background: #0A1C10;
-    border-top: 1px solid #1A4D23;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-  }
-
-  #ai-input {
-    flex: 1;
-    background: #050D08;
-    border: 1px solid #1A4D23;
-    padding: 10px;
-    color: #FFF;
-    font-family: inherit;
-    font-size: 0.8rem;
-    border-radius: 4px;
-    outline: none;
-  }
-  #ai-input:focus { border-color: #3ED97A; }
-
-  #ai-send {
-    background: #3ED97A;
-    color: #050D08;
-    border: none;
-    padding: 0 15px;
-    margin-left: 8px;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
+  #ai-chat-window.ai-window-hidden { opacity: 0; transform: translateY(8px) scale(.97); pointer-events: none; }
+  .ai-header { padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--c-border); }
+  .ai-header h3 { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--c-text); margin: 0; display: inline-block; }
+  .ai-status-dot { display: inline-block; width: 7px; height: 7px; background: var(--c-accent); border-radius: 50%; margin-right: 8px; }
+  #ai-close { background: none; border: none; color: var(--c-text-secondary); font-size: 1.3rem; cursor: pointer; width: 30px; height: 30px; border-radius: 6px; }
+  #ai-close:hover { color: var(--c-text); background: var(--c-raise); }
+  .ai-body { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 0.86rem; }
+  .ai-msg { padding: 10px 13px; border-radius: 8px; line-height: 1.5; max-width: 86%; }
+  .ai-bot { background: var(--c-raise); color: var(--c-text); border: 1px solid var(--c-border); align-self: flex-start; }
+  .ai-user { background: var(--c-accent); color: var(--c-accent-ink); align-self: flex-end; font-weight: 500; }
+  .ai-footer { display: flex; padding: 12px; border-top: 1px solid var(--c-border); gap: 8px; }
+  #ai-input { flex: 1; background: var(--c-bg); border: 1px solid var(--c-border-2); padding: 10px 12px; color: var(--c-text); font-family: inherit; font-size: 0.86rem; border-radius: var(--r); outline: none; }
+  #ai-input:focus { border-color: var(--c-accent); }
+  #ai-send { background: var(--c-accent); color: var(--c-accent-ink); border: none; padding: 0 14px; font-weight: 700; border-radius: var(--r); cursor: pointer; }
   @media (max-width: 480px) {
-    #decrypt-ai-widget { bottom: 15px; right: 15px; }
-    #ai-chat-window { width: calc(100vw - 30px); height: 400px; bottom: 60px; right: -5px; }
+    #decrypt-ai-widget { bottom: 14px; right: 14px; }
+    #ai-chat-window { width: calc(100vw - 28px); height: 400px; bottom: 56px; right: 0; }
   }
 </style>
 
