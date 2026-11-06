@@ -446,6 +446,9 @@ a.res:hover { background: var(--panel-2); }
 .cert { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; padding: 22px; }
 .cert h4 { font-size: 1.25rem; letter-spacing: -.02em; }
 .cert p { color: var(--text-2); font-size: .88rem; margin-top: 4px; max-width: 52ch; }
+.cert-actions { display: grid; justify-items: end; gap: 8px; }
+.cert-actions a { color: var(--text-2); font-size: .76rem; text-decoration: underline; text-underline-offset: 3px; }
+.cert-actions a:hover { color: var(--text); }
 
 /* daily decrypt compact */
 .dd-compact { display: grid; gap: 14px; padding: 20px; }

@@ -378,6 +378,31 @@ function refreshCert() {
     }
   }).catch(() => {});
 }
+function downloadCertificate() {
+  const button = $('#cert-download');
+  if (!P || !button) return;
+
+  const label = button.innerHTML;
+  button.disabled = true;
+  button.textContent = 'Preparing PDF…';
+  apiFetch({ action: 'verify_certificate', code: P.code }).then(d => {
+    if (!d || d.verified !== true) throw new Error('Your certificate could not be verified.');
+    if (!d.pdfFileId) throw new Error('The PDF is not available yet. Please contact the DECRYPT team.');
+
+    const link = document.createElement('a');
+    link.href = 'https://drive.google.com/uc?export=download&id=' + encodeURIComponent(d.pdfFileId);
+    link.download = 'DECRYPT-2.0-Certificate-' + (P.name || 'Participant').replace(/[^a-zA-Z0-9 -]/g, '').trim() + '.pdf';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }).catch(err => {
+    console.error('Certificate download failed:', err);
+    toast(err.message || 'Certificate download failed. Please try again.');
+  }).finally(() => {
+    button.disabled = false;
+    button.innerHTML = label;
+  });
+}
 function startPolling() {
   clearInterval(_campTimer);
   pollCampaigns(true);
@@ -855,7 +880,7 @@ const Pages = (function () {
     const d = Progress.defs(), on = d.filter(a => a.on).length, xp = Progress.getXP();
     const cert = P.certStatus === 'Sent' && P.certUrl;
     const certBody = cert ?
-      '<div class="cert"><div><span class="lbl">DECRYPT 2.0 Certificate</span><h4 style="margin-top:6px">' + esc(P.name) + '</h4><p>Awarded for participation in DECRYPT 2.0. It is a PDF — save it or share it as you like.</p></div><a class="btn btn-primary" href="' + esc(P.certUrl) + '" target="_blank" rel="noopener" download>' + ico('download') + 'Download</a></div>' :
+      '<div class="cert"><div><span class="lbl">DECRYPT 2.0 Certificate</span><h4 style="margin-top:6px">' + esc(P.name) + '</h4><p>Awarded for participation in DECRYPT 2.0. Download the PDF or verify its authenticity.</p></div><div class="cert-actions"><button class="btn btn-primary" type="button" id="cert-download">' + ico('download') + 'Download PDF</button><a href="' + esc(P.certUrl) + '" target="_blank" rel="noopener">Verify certificate</a></div></div>' :
       '<div class="cert"><div><span class="lbl">DECRYPT 2.0 Certificate</span><h4 style="margin-top:6px">Not issued yet</h4><p>' + (P.checkinTime ? 'You\'re eligible. Your certificate is being prepared and will appear here once issued.' : 'Certificates go to participants who attend DECRYPT 2.0. Check back after the event.') + '</p></div>' + pill(P.checkinTime ? 'Preparing' : 'Pending', P.checkinTime ? 'warn' : '') + '</div>';
     set('achievements',
       head('Achievements', 'Milestones, XP and your certificate.') +
@@ -868,6 +893,7 @@ const Pages = (function () {
         '<section class="panel"><div class="panel-h"><h3>Journey</h3></div>' + Progress.journeyHtml() + '</section>' +
         '<section class="panel"><div class="panel-h"><h3>Daily Decrypt</h3></div>' + DailyDecrypt.compactHtml() + '</section>' +
       '</div></div>');
+    if (cert) $('#cert-download').addEventListener('click', downloadCertificate);
   }
 
   /* ----- Notifications ----- */
