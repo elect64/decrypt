@@ -33,11 +33,11 @@ const DECRYPT_SPEAKERS = [
    { title, category ('Slides'|'Recording'|'Tool'|'Reading'…), description, url } */
 const DECRYPT_RESOURCES = [
   { title: 'Decrypt 2.0 Day 1 - Miss Anjiee', category: 'Audio', description: 'Miss Anjolaoluwa Anifowose', url: 'assets/Day 1 - Miss Anjie.m4a' },
-  { title: 'Decrypt 2.0 Day 1 - Stream 1', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 1 - Stream1.ogg' },
-  { title: 'Decrypt 2.0 Day 1 - Stream 2', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 1 - Stream2.ogg' },
+  { title: 'Decrypt 2.0 Day 1 - Stream 1', category: 'Audio', description: 'Miss Anjolaoluwa Anifowose', url: 'assets/Day 1 - Stream1.ogg' },
+  { title: 'Decrypt 2.0 Day 1 - Stream 2', category: 'Audio', description: 'Mr Femi Olowo', url: 'assets/Day 1 - Stream2.ogg' },
   { title: 'Decrypt 2.0 Day 1', category: 'Video', description: 'Full Stream', url: 'assets/Decryptv2_Ms. Anjolaoluwa.mp4' },
   { title: 'Decrypt 2.0 Day 2 - Mr Elect', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 2 - Mr Elect.mp3' },
-  { title: 'Decrypt 2.0 Day 2 - Full Stream', category: 'Audio', description: 'Mr Elect Okezie', url: 'assets/Day 2 - Full Stream.ogg' },
+  { title: 'Decrypt 2.0 Day 2 - Full Stream', category: 'Audio', description: 'Full Stream', url: 'assets/Day 2 - Full Stream.ogg' },
   { title: 'Decrypt 2.0 Day 2', category: 'Video', description: 'Full Stream', url: 'assets/Day 2.mp4' }
 ];
 
@@ -852,18 +852,181 @@ const Pages = (function () {
 
   /* ----- Resources ----- */
   let _resFilter = 'All';
+  let _resourceMedia = null;
+  function resourceMediaKind(resource) {
+    const category = String(resource.category || '').toLowerCase();
+    if (category === 'audio' || category === 'video') return category;
+    const path = String(resource.url || '').split(/[?#]/)[0].toLowerCase();
+    const extension = path.slice(path.lastIndexOf('.') + 1);
+    if (['mp3', 'm4a', 'ogg', 'wav', 'aac', 'flac'].includes(extension)) return 'audio';
+    if (['mp4', 'm4v', 'mov', 'webm', 'ogv'].includes(extension)) return 'video';
+    return '';
+  }
+
   function resources() {
+    if (_resourceMedia) {
+      _resourceMedia.pause();
+      _resourceMedia.removeAttribute('src');
+      _resourceMedia.load();
+      _resourceMedia = null;
+    }
     const cats = ['All'].concat(Array.from(new Set(DECRYPT_RESOURCES.map(r => r.category).filter(Boolean))));
-    const items = DECRYPT_RESOURCES.filter(r => _resFilter === 'All' || r.category === _resFilter);
     let body;
     if (!DECRYPT_RESOURCES.length) {
       body = '<section class="panel"><div class="empty"><span class="li-ico">' + ico('library') + '</span><b>Nothing here yet</b><p>Slides, recordings and tools from the sessions will be posted here for participants.</p></div></section>';
     } else {
       body = (cats.length > 2 ? '<div class="filters">' + cats.map(c => '<button class="chip' + (c === _resFilter ? ' on' : '') + '" data-rf="' + esc(c) + '">' + esc(c) + '</button>').join('') + '</div>' : '') +
-        '<section class="panel">' + items.map(r => '<a class="res" href="' + esc(r.url) + '" target="_blank" rel="noopener"><span class="li-ico">' + ico(r.category === 'Reading' ? 'book' : r.category === 'Tool' ? 'link' : 'file') + '</span><div><b>' + esc(r.title) + '</b><small>' + esc(r.description || '') + '</small></div><span class="type">' + esc(r.category || '') + '</span></a>').join('') + '</section>';
+        '<section class="panel">' +
+          '<div class="resource-player" id="resource-player" hidden>' +
+            '<div class="resource-player-head"><div><span class="lbl" id="resource-player-kind"></span><b id="resource-player-title"></b><small id="resource-player-description"></small></div><button class="btn btn-quiet btn-sm" type="button" id="resource-player-close">Close</button></div>' +
+            '<div class="resource-media-stage" id="resource-media-stage"></div>' +
+            '<div class="media-controls"><button class="btn btn-ghost btn-sm" type="button" id="media-play" aria-label="Play">Play</button>' +
+              '<div class="media-timeline"><div class="media-time-row"><span id="media-current">0:00</span><span id="media-duration">--:--</span></div>' +
+                '<input class="media-seek" id="media-seek" type="range" min="0" max="0" step="0.1" value="0" aria-label="Seek through media">' +
+              '</div></div>' +
+          '</div>' +
+          '<div class="resource-items">' + DECRYPT_RESOURCES.map((r, index) => {
+            const kind = resourceMediaKind(r);
+            const category = esc(r.category || '');
+            const icon = r.category === 'Reading' ? 'book' : r.category === 'Tool' ? 'link' : 'file';
+            const content = '<span class="li-ico">' + ico(kind ? 'play' : icon) + '</span><span class="resource-copy"><b>' + esc(r.title) + '</b><small>' + esc(r.description || '') + '</small></span><span class="type">' + category + '</span>';
+            return kind
+              ? '<button class="res res-media" type="button" data-resource-index="' + index + '" data-resource-category="' + category + '" data-media-kind="' + kind + '" aria-label="Play ' + esc(r.title) + '" aria-pressed="false">' + content + '</button>'
+              : '<a class="res" href="' + esc(r.url) + '" target="_blank" rel="noopener" data-resource-category="' + category + '">' + content + '</a>';
+          }).join('') + '</div></section>';
     }
     set('resources', head('Resources Hub', 'Slides, recordings and tools from DECRYPT 2.0.') + body);
-    $$('[data-rf]').forEach(b => b.addEventListener('click', () => { _resFilter = b.dataset.rf; resources(); }));
+
+    function applyResourceFilter() {
+      $$('[data-rf]').forEach(button => {
+        const selected = button.dataset.rf === _resFilter;
+        button.classList.toggle('on', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      $$('[data-resource-category]').forEach(item => {
+        item.hidden = _resFilter !== 'All' && item.dataset.resourceCategory !== _resFilter;
+      });
+    }
+    $$('[data-rf]').forEach(button => button.addEventListener('click', () => {
+      _resFilter = button.dataset.rf;
+      applyResourceFilter();
+    }));
+    applyResourceFilter();
+
+    const player = $('#resource-player');
+    const mediaStage = $('#resource-media-stage');
+    const playButton = $('#media-play');
+    const seek = $('#media-seek');
+    const currentTime = $('#media-current');
+    const duration = $('#media-duration');
+    const formatTime = seconds => {
+      if (!Number.isFinite(seconds) || seconds < 0) return '--:--';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+      return mins + ':' + secs;
+    };
+    const syncMediaProgress = () => {
+      if (!_resourceMedia) return;
+      const length = Number.isFinite(_resourceMedia.duration) ? _resourceMedia.duration : 0;
+      const position = Number.isFinite(_resourceMedia.currentTime) ? _resourceMedia.currentTime : 0;
+      seek.max = String(length);
+      seek.value = String(Math.min(position, length));
+      seek.style.setProperty('--media-progress', (length ? Math.min(position / length, 1) * 100 : 0) + '%');
+      currentTime.textContent = formatTime(position);
+      duration.textContent = formatTime(length);
+      const isPlaying = !_resourceMedia.paused && !_resourceMedia.ended;
+      playButton.textContent = _resourceMedia.ended ? 'Replay' : isPlaying ? 'Pause' : 'Play';
+      playButton.setAttribute('aria-label', _resourceMedia.ended ? 'Replay media' : isPlaying ? 'Pause media' : 'Play media');
+      $$('[data-resource-index]').forEach(button => {
+        const active = button.dataset.resourceIndex === _resourceMedia.dataset.resourceIndex;
+        const title = $('.resource-copy b', button).textContent;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active && isPlaying));
+        button.setAttribute('aria-label', (active && isPlaying ? 'Pause ' : 'Play ') + title);
+      });
+    };
+    const startResource = index => {
+      const resource = DECRYPT_RESOURCES[index];
+      if (!resource) return;
+      if (_resourceMedia && _resourceMedia.dataset.resourceIndex === String(index)) {
+        if (_resourceMedia.paused || _resourceMedia.ended) {
+          if (_resourceMedia.ended) _resourceMedia.currentTime = 0;
+          _resourceMedia.play().catch(() => toast('Unable to play this file. Check your connection and try again.'));
+        } else {
+          _resourceMedia.pause();
+        }
+        return;
+      }
+
+      if (_resourceMedia) {
+        _resourceMedia.pause();
+        _resourceMedia.removeAttribute('src');
+        _resourceMedia.load();
+      }
+      const kind = resourceMediaKind(resource);
+      _resourceMedia = document.createElement(kind);
+      _resourceMedia.dataset.resourceIndex = String(index);
+      _resourceMedia.preload = 'metadata';
+      _resourceMedia.src = resource.url;
+      if (kind === 'video') {
+        _resourceMedia.className = 'resource-video';
+        _resourceMedia.playsInline = true;
+        _resourceMedia.setAttribute('aria-label', resource.title);
+        mediaStage.replaceChildren(_resourceMedia);
+      } else {
+        _resourceMedia.hidden = true;
+        mediaStage.innerHTML = '<div class="resource-audio-art" aria-hidden="true">' + ico('file') + '<span>Audio playback</span></div>';
+        mediaStage.appendChild(_resourceMedia);
+      }
+      $('#resource-player-kind').textContent = kind;
+      $('#resource-player-title').textContent = resource.title;
+      $('#resource-player-description').textContent = resource.description || '';
+      player.hidden = false;
+      _resourceMedia.addEventListener('timeupdate', syncMediaProgress);
+      _resourceMedia.addEventListener('loadedmetadata', syncMediaProgress);
+      _resourceMedia.addEventListener('durationchange', syncMediaProgress);
+      _resourceMedia.addEventListener('play', syncMediaProgress);
+      _resourceMedia.addEventListener('pause', syncMediaProgress);
+      _resourceMedia.addEventListener('ended', syncMediaProgress);
+      _resourceMedia.addEventListener('error', () => toast('This media file could not be loaded.'));
+      syncMediaProgress();
+      _resourceMedia.play().catch(() => toast('Unable to play this file. Check your connection and try again.'));
+    };
+    $$('[data-resource-index]').forEach(button => button.addEventListener('click', () => startResource(Number(button.dataset.resourceIndex))));
+    playButton.addEventListener('click', () => {
+      if (!_resourceMedia) return;
+      if (_resourceMedia.paused || _resourceMedia.ended) {
+        if (_resourceMedia.ended) _resourceMedia.currentTime = 0;
+        _resourceMedia.play().catch(() => toast('Unable to play this file. Check your connection and try again.'));
+      } else {
+        _resourceMedia.pause();
+      }
+    });
+    seek.addEventListener('input', () => {
+      if (!_resourceMedia || !Number.isFinite(_resourceMedia.duration)) return;
+      _resourceMedia.currentTime = Number(seek.value);
+      syncMediaProgress();
+    });
+    $('#resource-player-close').addEventListener('click', () => {
+      if (_resourceMedia) {
+        _resourceMedia.pause();
+        _resourceMedia.removeAttribute('src');
+        _resourceMedia.load();
+        _resourceMedia = null;
+      }
+      player.hidden = true;
+      mediaStage.replaceChildren();
+      playButton.textContent = 'Play';
+      currentTime.textContent = '0:00';
+      duration.textContent = '--:--';
+      seek.value = '0';
+      seek.max = '0';
+      seek.style.setProperty('--media-progress', '0%');
+      $$('[data-resource-index]').forEach(button => {
+        button.classList.remove('active');
+        button.setAttribute('aria-pressed', 'false');
+      });
+    });
   }
 
   /* ----- Community ----- */
