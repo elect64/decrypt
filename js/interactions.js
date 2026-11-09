@@ -53,7 +53,7 @@ const DecryptUI = (() => {
           <span class="c-theme">${ed.theme} — ${ed.format}</span>
         </span>
         <span class="c-date">${ed.date}</span>
-        <span class="status-pill" data-status="${ed.status}">${ed.status}</span>
+        <span class="status-pill" data-status="${ed.status}">${ed.status === 'Join waitlist' ? `<a href="register.html?v=1.1">${ed.status}</a>` : ed.status}</span>
       </button>
     `).join('');
     list.querySelectorAll('.chapter').forEach(el => el.addEventListener('click', () => onChapterOpen(el)));

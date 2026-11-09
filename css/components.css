@@ -315,3 +315,10 @@
 #ecosystem, #speaker-wall, #knowledge-grid { margin-top: 44px; }
 .cta-title { max-width: 18ch; }
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+
+.hero-register-mobile {
+  background: #ff9b29;   /* your colour */
+  color: #FFFFFF;        /* text colour */
+}
+.hero-register-mobile:hover { filter: brightness(1.15); }
